@@ -70,7 +70,7 @@ let msg = {
   "greeting": 'Hi'
 }
 
-// connType: JOINED,WAITING,ACTIVATE,BNEXT,TIMEOUT,CLOSE
+// connType: NONE,JOINED,WAITING,ACTIVATE,BNEXT,TIMEOUT,CLOSE
 
 export default {
   name: 'App',
@@ -78,10 +78,10 @@ export default {
     return {
       players: [
         {userID: "c63p432n1fdk5k0aeta0", status: "MANUAL", seatID:0,connType: "JOINED",isActivated: true,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta1", status: "MANUAL", seatID:1,connType: "JOINED",isActivated: false,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta2", status: "MANUAL", seatID:2,connType: "JOINED",isActivated: false,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta3", status: "MANUAL", seatID:3,connType: "JOINED",isActivated: false,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta4", status: "MANUAL", seatID:4,connType: "JOINED",isActivated: false,round:0, betvol:100,greeting:"Hi"},
+        {userID: "c63p432n1fdk5k0aeta1", status: "AUTO", seatID:2,connType: "JOINED",isActivated: false,round:0, betvol:100,greeting:"Hi"},
+        {userID: "c63p432n1fdk5k0aeta2", status: "AUTO", seatID:4,connType: "JOINED",isActivated: false,round:0, betvol:100,greeting:"Hi"},
+        {userID: "c63p432n1fdk5k0aeta3", status: "MANUAL", seatID:1,connType: "JOINED",isActivated: false,round:0, betvol:100,greeting:"Hi"},
+        {userID: "c63p432n1fdk5k0aeta4", status: "MANUAL", seatID:3,connType: "JOINED",isActivated: false,round:0, betvol:100,greeting:"Hi"},
         {userID: "c63p432n1fdk5k0aeta5", status: "MANUAL", seatID:5,connType: "JOINED",isActivated: false,round:0, betvol:100,greeting:"Hi"},
         {userID: "c63p432n1fdk5k0aeta6", status: "MANUAL", seatID:6,connType: "JOINED",isActivated: false,round:0, betvol:100,greeting:"Hi"},
         {userID: "c63p432n1fdk5k0aeta7", status: "MANUAL", seatID:7,connType: "JOINED",isActivated: false,round:0, betvol:100,greeting:"Hi"},
@@ -95,7 +95,7 @@ export default {
       seatID: 0,
       userStatus: "",
       betvolTotal: 50,
-      counter: 10
+      counter: 0
     }
   },
   mounted() {
@@ -119,12 +119,18 @@ export default {
     setInterval(() => {
       if (this.counter > 0) {
         this.counter--
-        if(this.counter === 0) {
-          this. players[0].isActivated = false
+        if(this.counter === 0 && this.players[0].isActivated==true ) {
+          this.players[0].isActivated = false
+
+          msg.status = this.players[0].status 
           msg.userID = this.players[0].userID
-          msg.seatID = this.players[0].seatID
-          msg.betvol = 0
+          msg.seatID = parseInt(this.players[0].seatID)
           msg.connType = "TIMEOUT"
+          msg.isActivated = this.players[0].isActivated
+          msg.betvol = parseInt(this.players[0].betvol)
+          msg.round = parseInt(this.players[0].round)
+          msg.greeting = this.players[0].greeting
+
           this.socket.send(JSON.stringify(msg))
         }
       } 
@@ -132,15 +138,18 @@ export default {
   },
   methods: {
     sendMessage(player) {
-      msg.tableID = parseInt(this.tableID) 
+      msg.tableID = parseInt(this.tableID)
+      msg.status = player.status 
       msg.userID = player.userID
       msg.seatID = parseInt(player.seatID)
       msg.connType = "BNEXT"
+      msg.isActivated = player.isActivated
       msg.betvol = parseInt(player.betvol)
-      msg.greeting = "test!"
+      msg.round = parseInt(player.round)
+      msg.greeting = player.greeting
       this.socket.send(JSON.stringify(msg))
       if(player.seatID ===0 ) {
-        this.counter = 10
+        this.counter = 40
         player.isActivated = false
       }
     },
@@ -150,11 +159,9 @@ export default {
       try {
         rcvJson = JSON.parse(evt.data)
         console.log(rcvJson.userID, rcvJson.status, rcvJson.betvol)
-        if(rcvJson.seatID === 2) {
-          if(rcvJson.connType == "TIMEOUT" || rcvJson.connType == "BNEXT") {
-            this.players[0].isActivated = true
-            this.counter = 10
-          }
+        if(rcvJson.seatID === 4) {
+          this.players[0].isActivated = true
+          this.counter = 40
         } 
       } catch(e) {
         console.log("error message", e.message)
@@ -169,14 +176,13 @@ export default {
     },
     joinMessage(player) {
       msg.userID = player.userID
+      msg.status = player.status
       msg.seatID = player.seatID
       msg.connType = "JOINED"
-      if (msg.userID === "c63p432n1fdk5k0aeta0")
-        msg.status = "MANUAL"
-      else
-        msg.status = "AUTO"
-
-      msg.betvol = 0
+      msg.isActivated = player.isActivated
+      msg.round = player.round
+      msg.betvol = player.betvol
+      msg.greeting = player.greeting
       this.socket.send(JSON.stringify(msg))
     }
   }
