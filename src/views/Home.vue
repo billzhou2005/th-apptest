@@ -204,7 +204,7 @@ export default {
         console.log(rcvJson.userID, rcvJson.status, rcvJson.betvol)
 
         this.getCountFocus(rcvJson.seatID)
-        this.counter = 15
+        this.counter = 12
         if(this.countIndex == this.selectedSeatID) {
           this.players[this.countIndex].isActivated = true
         } 
