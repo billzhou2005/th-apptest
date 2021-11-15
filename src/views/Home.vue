@@ -1,7 +1,7 @@
 
 <template>
   <div class="join">
-    <button class="joinButton" @click="joinMessage(players[0])">Player1 Join</button>
+    <button class="joinButton" @click="joinMessage()">Player1 Join</button>
     <button class="joinButton" style="margin-left:10px;" @click="joinMessage(players[2])">Player2 Join</button>
     <button class="joinButton" style="margin-left:10px;" @click="joinMessage(players[4])">Player3 Join</button>
   </div>
@@ -13,8 +13,8 @@
       </div>
       <form :action="sendMessage" @click.prevent="onSubmit">
         <label for="betvol">BetVol:   </label>
-        <input v-model="players[2].betvol" type="text" > 
-        <input :disabled="!players[2].isActivated" type="submit" value="Player2 Send" @click="sendMessage(players[1])"> 
+        <input v-model="players[2].betvol" type="text" >
+        <input :disabled="!players[2].isActivated" type="submit" value="Player2 Send" @click="sendMessage(players[1])">
       </form>
     </div>
     <div class="main-right">
@@ -24,7 +24,7 @@
       </div>
       <form :action="sendMessage" @click.prevent="onSubmit">
         <label for="betvol">BetVol:   </label>
-        <input v-model="players[4].betvol" type="text" > 
+        <input v-model="players[4].betvol" type="text" >
         <input :disabled="!players[4].isActivated" type="submit" value="Player3 Send" @click="sendMessage(players[2])"> <br><br>
       </form>
     </div>
@@ -61,20 +61,28 @@
 </template>
 
 <script>
-let msg = {
-  "tableID": 0,
-  "userID": "c63p432n1fdk5k0aeta0",
-  "status": 'MANUAL',
-  "seatID": 0,
-  "connType": 'JOINED',
-  "isActivated": false,
-  "round": 0,
-  "betvol": 0,
-  "greeting": 'Hi'
-}
 
 // connType: NONE,JOINED,WAITING,BNEXT,TIMEOUT,CLOSE
 // seatID: 0-8, 100:Invalid
+
+let roomMsg = {
+  "tID": 0,
+  "sType": "sendTest",
+  "rType": "rcvTest",
+  "usID": 0,
+  "fID": 0,
+  "res": 'Hi',
+  "players": [
+    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 },
+    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 },
+    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 },
+    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 },
+    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 },
+    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 }
+  ]
+}
+
+// let player = {"userID": "c63p432n1fdk5k0aeta0", "nickName": "NONE", "status": "MANUAL", "seatID":100, "isActivated": false, "round":0, "betvol":0, "greeting":"Hi" }
 
 export default {
   name: 'App',
@@ -122,14 +130,14 @@ export default {
     this.socket.onmessage = (evt) => {
         this.acceptMsg(evt)
     }
-    
+
     setInterval(() => {
       if (this.counter > 0) {
         this.counter--
         if(this.counter === 0 && this.players[0].isActivated==true ) {
           this.players[0].isActivated = false
 
-          msg.status = this.players[0].status 
+          msg.status = this.players[0].status
           msg.userID = this.players[0].userID
           msg.seatID = parseInt(this.players[0].seatID)
           msg.connType = "TIMEOUT"
@@ -140,13 +148,13 @@ export default {
 
           this.socket.send(JSON.stringify(msg))
         }
-      } 
+      }
     }, 1000)
   },
   methods: {
     sendMessage(player) {
       msg.tableID = parseInt(this.tableID)
-      msg.status = player.status 
+      msg.status = player.status
       msg.userID = player.userID
       msg.seatID = parseInt(player.seatID)
       msg.connType = "BNEXT"
@@ -201,34 +209,22 @@ export default {
       this.rcvMessage = evt.data
       try {
         rcvJson = JSON.parse(evt.data)
-        console.log(rcvJson.userID, rcvJson.status, rcvJson.betvol)
+        console.log(rcvJson.rType, rcvJson.fID , rcvJson.usID)
 
-        this.getCountFocus(rcvJson.seatID)
-        this.counter = 12
-        if(this.countIndex == this.selectedSeatID) {
-          this.players[this.countIndex].isActivated = true
-        } 
       } catch(e) {
         console.log("error message", e.message)
       }
     },
     WebSocketClose() {
-      msg.tableID = parseInt(this.tableID) 
+      msg.tableID = parseInt(this.tableID)
       msg.userID = this.userID
       msg.connType = "CLOSE"
       this.socket.send(JSON.stringify(msg))
       this.socket.close()
     },
-    joinMessage(player) {
-      msg.userID = player.userID
-      msg.status = player.status
-      msg.seatID = player.seatID
-      msg.connType = "JOINED"
-      msg.isActivated = player.isActivated
-      msg.round = player.round
-      msg.betvol = player.betvol
-      msg.greeting = player.greeting
-      this.socket.send(JSON.stringify(msg))
+    joinMessage() {
+      console.log(roomMsg)
+      this.socket.send(JSON.stringify(roomMsg))
     }
   }
 }
