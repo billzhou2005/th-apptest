@@ -67,19 +67,16 @@
 
 let roomMsg = {
   "tID": 0,
-  "sType": "sendTest",
-  "rType": "rcvTest",
+  "msgType": "sendTest",
+  "msgID": 0,
+  "status": ["MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL"],
   "usID": 0,
   "fID": 0,
-  "res": 'Hi',
-  "players": [
-    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 },
-    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 },
-    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 },
-    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 },
-    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 },
-    {"nickName": "NONE", "sts": "MANUAL", "sID":100, "vol":0, "tol":200000 }
-  ]
+  "nickName": ["NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE"],
+  "bvol": [0,0,0,0,0,0,0,0,0,],
+  "balance": [0,0,0,0,0,0,0,0,0],
+  "cardsPoints": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+  "cardsSuits": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 }
 
 // let player = {"userID": "c63p432n1fdk5k0aeta0", "nickName": "NONE", "status": "MANUAL", "seatID":100, "isActivated": false, "round":0, "betvol":0, "greeting":"Hi" }
