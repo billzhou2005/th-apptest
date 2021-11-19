@@ -1,9 +1,7 @@
 
 <template>
   <div class="join">
-    <button class="joinButton" @click="joinMessage()">Player1 Join</button>
-    <button class="joinButton" style="margin-left:10px;" @click="joinMessage(players[2])">Player2 Join</button>
-    <button class="joinButton" style="margin-left:10px;" @click="joinMessage(players[4])">Player3 Join</button>
+    <button class="joinButton" @click="joinMessage()">LoginUser Join</button>
   </div>
   <div class="row-up">
     <div class="main-left">
@@ -62,32 +60,30 @@
 
 <script>
 
-// msgType-init: NONE
-// msgType-Send: JOINED,WAITING,BNEXT,TIMEOUT,CLOSE
-// msgType-Received: Assigned,RNEW,BNEXT,RDONE (RNEW: Round new)
-// seatID: 0-8, >8-all
 
-let roomMsg = {
-  "tID": 0,
-  "name": "loginU",
-  "msgType": "NONE",
-  "seatID": 0,
-  "bvol": 0,
-  "balance": 100000,
-  "fID": 0,
-  "status": ["MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL"],
-  "names": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
-  "balances": [200000,200000,200000,200000,200000,200000,200000,200000,200000],
-  "cardsPoints": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-  "cardsSuits": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-}
-
-// let player = {"userID": "c63p432n1fdk5k0aeta0", "nickName": "NONE", "status": "MANUAL", "seatID":100, "isActivated": false, "round":0, "betvol":0, "greeting":"Hi" }
 
 export default {
   name: 'App',
   data() {
     return {
+      // msgType-init: NONE
+      // msgType-Send: JOINED,WAITING,BNEXT,TIMEOUT,CLOSE
+      // msgType-Received: Assigned,RNEW,BNEXT,RDONE (RNEW: Round new)
+      // seatID: 0-8, >8-all
+      roomMsg: {
+        "tID": 0,
+        "name": "loginU",
+        "msgType": "NEW",
+        "type": "BNEXT",
+        "seatID": 0,
+        "bvol": 0,
+        "balance": 100000,
+        "fID": 0,
+        "status": ["MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL"],
+        "types": ["NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE"],
+        "names": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
+        "balances": [200000,200000,200000,200000,200000,200000,200000,200000,200000],
+      },      
       players: [
         {userID: "c63p432n1fdk5k0aeta0", status: "MANUAL", seatID:0,connType: "NONE",isActivated: true,round:0, betvol:100,greeting:"Hi"},
         {userID: "c63p432n1fdk5k0aeta1", status: "MANUAL", seatID:100,connType: "NONE",isActivated: false,round:0, betvol:100,greeting:"Hi"},
@@ -137,32 +133,14 @@ export default {
         if(this.counter === 0 && this.players[0].isActivated==true ) {
           this.players[0].isActivated = false
 
-          msg.status = this.players[0].status
-          msg.userID = this.players[0].userID
-          msg.seatID = parseInt(this.players[0].seatID)
-          msg.connType = "TIMEOUT"
-          msg.isActivated = this.players[0].isActivated
-          msg.betvol = parseInt(this.players[0].betvol)
-          msg.round = parseInt(this.players[0].round)
-          msg.greeting = this.players[0].greeting
-
-          this.socket.send(JSON.stringify(msg))
+        //  this.socket.send(JSON.stringify(msg))
         }
       }
     }, 1000)
   },
   methods: {
     sendMessage(player) {
-      msg.tableID = parseInt(this.tableID)
-      msg.status = player.status
-      msg.userID = player.userID
-      msg.seatID = parseInt(player.seatID)
-      msg.connType = "BNEXT"
-      msg.isActivated = player.isActivated
-      msg.betvol = parseInt(player.betvol)
-      msg.round = parseInt(player.round)
-      msg.greeting = player.greeting
-      this.socket.send(JSON.stringify(msg))
+    //  this.socket.send(JSON.stringify(msg))
 
       // this.getCountFocus(player.seatID)
       // this.counter = 15
@@ -216,17 +194,14 @@ export default {
       }
     },
     WebSocketClose() {
-      msg.tableID = parseInt(this.tableID)
-      msg.userID = this.userID
-      msg.connType = "CLOSE"
-      this.socket.send(JSON.stringify(msg))
+    //  this.socket.send(JSON.stringify(msg))
       this.socket.close()
     },
     joinMessage() {
-      roomMsg.msgType = "JOIN"
-      roomMsg.name = "LoginU"
-      roomMsg.balance = 150000
-      this.socket.send(JSON.stringify(roomMsg))
+      this.roomMsg.msgType = "JOIN"
+      this.roomMsg.name = "LoginU"
+      this.roomMsg.balance = 150000
+      this.socket.send(JSON.stringify(this.roomMsg))
     }
   }
 }
