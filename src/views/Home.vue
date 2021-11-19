@@ -83,7 +83,7 @@ export default {
         "types": ["NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE"],
         "names": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
         "balances": [200000,200000,200000,200000,200000,200000,200000,200000,200000],
-      },      
+      },
       players: [
         {userID: "c63p432n1fdk5k0aeta0", status: "MANUAL", seatID:0,connType: "NONE",isActivated: true,round:0, betvol:100,greeting:"Hi"},
         {userID: "c63p432n1fdk5k0aeta1", status: "MANUAL", seatID:100,connType: "NONE",isActivated: false,round:0, betvol:100,greeting:"Hi"},
@@ -198,6 +198,7 @@ export default {
       this.socket.close()
     },
     joinMessage() {
+      this.roomMsg.tID = 0
       this.roomMsg.msgType = "JOIN"
       this.roomMsg.name = "LoginU"
       this.roomMsg.balance = 150000
