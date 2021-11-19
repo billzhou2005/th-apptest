@@ -62,19 +62,22 @@
 
 <script>
 
-// connType: NONE,JOINED,WAITING,BNEXT,TIMEOUT,CLOSE
-// seatID: 0-8, 100:Invalid
+// msgType-init: NONE
+// msgType-Send: JOINED,WAITING,BNEXT,TIMEOUT,CLOSE
+// msgType-Received: Assigned,RNEW,BNEXT,RDONE (RNEW: Round new)
+// seatID: 0-8, >8-all
 
 let roomMsg = {
   "tID": 0,
-  "msgType": "sendTest",
-  "msgID": 0,
-  "status": ["MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL"],
-  "usID": 0,
+  "name": "loginU",
+  "msgType": "NONE",
+  "seatID": 0,
+  "bvol": 0,
+  "balance": 100000,
   "fID": 0,
-  "nickName": ["NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE"],
-  "bvol": [0,0,0,0,0,0,0,0,0,],
-  "balance": [200000,200000,200000,200000,200000,200000,200000,200000,200000],
+  "status": ["MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL"],
+  "names": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
+  "balances": [200000,200000,200000,200000,200000,200000,200000,200000,200000],
   "cardsPoints": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
   "cardsSuits": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 }
@@ -206,7 +209,7 @@ export default {
       this.rcvMessage = evt.data
       try {
         rcvJson = JSON.parse(evt.data)
-        console.log(rcvJson.rType, rcvJson.fID , rcvJson.usID)
+        console.log(rcvJson)
 
       } catch(e) {
         console.log("error message", e.message)
@@ -220,7 +223,9 @@ export default {
       this.socket.close()
     },
     joinMessage() {
-      console.log(roomMsg)
+      roomMsg.msgType = "JOIN"
+      roomMsg.name = "LoginU"
+      roomMsg.balance = 150000
       this.socket.send(JSON.stringify(roomMsg))
     }
   }
