@@ -6,43 +6,43 @@
   <div class="row-up">
     <div class="main-left">
       <div>
-      <span>Player2  </span>
-      <span v-if="countFocus[2]" style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span>
+      <span> {{ roomMsg.names[0] }}  </span>
+      <span v-if="countFocus[roomMsg.fID]" style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span>
       </div>
       <form :action="sendMessage" @click.prevent="onSubmit">
         <label for="betvol">BetVol:   </label>
-        <input v-model="players[2].betvol" type="text" >
-        <input :disabled="!players[2].isActivated" type="submit" value="Player2 Send" @click="sendMessage(players[1])">
+        <input v-model="roomMsg.balances[0]" type="text" >
+        <input :disabled="!countFocus[roomMsg.fID]" type="submit" value="Player2 Send" @click="sendMessage(roomMsg.bvol)">
       </form>
     </div>
     <div class="main-right">
       <div>
-      <span>Player3  </span>
-      <span v-if="countFocus[4]" style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span>
+      <span> {{ roomMsg.names[1] }} </span>
+      <span v-if="countFocus[roomMsg.fID]" style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span>
       </div>
       <form :action="sendMessage" @click.prevent="onSubmit">
         <label for="betvol">BetVol:   </label>
-        <input v-model="players[4].betvol" type="text" >
-        <input :disabled="!players[4].isActivated" type="submit" value="Player3 Send" @click="sendMessage(players[2])"> <br><br>
+        <input v-model="roomMsg.bvol" type="text" >
+        <input :disabled="!countFocus[roomMsg.fID]" type="submit" value="Player3 Send" @click="sendMessage(roomMsg.bvol)"> <br><br>
       </form>
     </div>
   </div>
 
   <div class="row-middle">
       <div class="betvolTotal">
-        <span class="betvolTotal">{{ players[0].betvol + players[2].betvol +players[4].betvol }}  </span>
+        <span class="betvolTotal">{{ roomMsg.balance }}  </span>
       </div>
   </div>
 
   <div class="row-down">
     <div>
-      <span>LoginUser  </span>
-      <span v-if="countFocus[0]" style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span>
+      <span>{{ roomMsg.names[3] }}  </span>
+      <span v-if="countFocus[roomMsg.fID]" style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span>
     </div>
     <form :action="sendMessage" @click.prevent="onSubmit">
       <label for="betvol">BetVol:   </label>
-      <input v-model="players[0].betvol" type="text" >
-      <input :disabled="!players[0].isActivated" type="submit" value="Player1 Send" @click="sendMessage(players[0])"> <br><br>
+      <input v-model="roomMsg.bvol" type="text" >
+      <input :disabled="!countFocus[roomMsg.fID]" type="submit" value="Player1 Send" @click="sendMessage(roomMsg.bvol)"> <br><br>
     </form>
 
   </div>
@@ -130,21 +130,17 @@ export default {
     setInterval(() => {
       if (this.counter > 0) {
         this.counter--
-        if(this.counter === 0 && this.players[0].isActivated==true ) {
-          this.players[0].isActivated = false
 
-        //  this.socket.send(JSON.stringify(msg))
-        }
       }
     }, 1000)
   },
   methods: {
-    sendMessage(player) {
+    sendMessage(bvol) {
     //  this.socket.send(JSON.stringify(msg))
 
       // this.getCountFocus(player.seatID)
       // this.counter = 15
-      player.isActivated = false
+      bvol = 0
     },
     getCountFocus(seatID) {
       this.countFocus[seatID] = false
@@ -187,7 +183,20 @@ export default {
       this.rcvMessage = evt.data
       try {
         rcvJson = JSON.parse(evt.data)
-        console.log(rcvJson)
+        if(rcvJson.tID == 0) {
+          this.roomMsg.name = rcvJson.name
+          this.roomMsg.msgType = rcvJson.msgType
+          this.roomMsg.type =rcvJson.type
+          this.roomMsg.seatID = rcvJson.seatID
+          this.roomMsg.bvol = rcvJson.bvol
+          this.roomMsg.balance = rcvJson.balance
+          this.roomMsg.fID = rcvJson.fID
+          this.roomMsg.status = rcvJson.status
+          this.roomMsg.names = rcvJson.names
+          this.roomMsg.balances = rcvJson.balances
+          console.log("Current room data arrived:")
+          console.log(this.roomMsg)
+        }
 
       } catch(e) {
         console.log("error message", e.message)
