@@ -4,49 +4,12 @@
     <button class="confirmButton" @click="joinMessage()">Join</button>
     <button class="confirmButton" style="margin-left:10px;" @click="leaveMessage()">Leave</button>
   </div>
-  <div class="row-up">
-    <div class="one-third">
-      <span> {{ roomMsg.names[0] }}  </span> <br>
-      <span> {{ roomMsg.balances[0] }}  </span> <br>
-      <span 
-        v-if="countFocus[roomMsg.fID]" 
-        style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span> <br>
-      <label for="betvol">BetVol:   </label> 
-      <input v-model="roomMsg.bvol" type="text" > <br>
-      <button 
-        :disabled="!countFocus[0]"
-        class="confirmButton" 
-        style="margin-top:10px;" 
-        @click="sendMessage(roomMsg.bvol)"> Confirm </button>
-    </div>
-    <div class="one-third">
-      <span> {{ roomMsg.names[1] }}  </span> <br>
-      <span> {{ roomMsg.balances[1] }}  </span> <br>
-      <span 
-        v-if="countFocus[roomMsg.fID]" 
-        style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span> <br>
-      <label for="betvol">BetVol:   </label> 
-      <input v-model="roomMsg.bvol" type="text" > <br>
-      <button 
-        :disabled="!countFocus[1]"
-        class="confirmButton" 
-        style="margin-top:10px;" 
-        @click="sendMessage(roomMsg.bvol)"> Confirm </button>
-    </div>
-    <div class="one-third">
-      <span> {{ roomMsg.names[2] }}  </span> <br>
-      <span> {{ roomMsg.balances[2] }}  </span> <br>
-      <span 
-        v-if="countFocus[roomMsg.fID]" 
-        style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span> <br>
-      <label for="betvol">BetVol:   </label> 
-      <input v-model="roomMsg.bvol" type="text" > <br>
-      <button 
-        :disabled="!countFocus[2]"
-        class="confirmButton" 
-        style="margin-top:10px;" 
-        @click="sendMessage(roomMsg.bvol)"> Confirm </button>
-    </div>
+  <div class="row-players">
+    <Player 
+      v-for="player in playersGroup.slice(0,3)"
+      :key="player.index"
+      v-bind="player"
+    />
   </div>
 
   <div class="row-middle">
@@ -55,19 +18,14 @@
       </div>
   </div>
 
-  <div class="row-down">
-    <div>
-      <span>{{ roomMsg.names[3] }}  </span> <br>
-      <span> {{ roomMsg.balances[3] }}  </span>
-      <span v-if="countFocus[roomMsg.fID]" style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span>
-    </div>
-    <form :action="sendMessage" @click.prevent="onSubmit">
-      <label for="betvol">BetVol:   </label>
-      <input v-model="roomMsg.bvol" type="text" >
-      <input :disabled="!countFocus[roomMsg.fID]" type="submit" value="Player1 Send" @click="sendMessage(roomMsg.bvol)"> <br><br>
-    </form>
-
+  <div class="row-players">
+    <Player 
+      v-for="player in playersGroup.slice(3,6)"
+      :key="player.index"
+      v-bind="player"
+    />
   </div>
+
   <div class="msg-btm" >
     <label>Message in a WebSocket</label>
     <p>
@@ -75,16 +33,15 @@
     </p>
     <button @click="WebSocketClose">CloseWS</button>
     <button @click="testButton"> Test </button>
-    <SimpleButton >外边框按钮</SimpleButton>
   </div>
 </template>
 
 <script>
-import SimpleButton from '../components/SimpleButton.vue'
 
+import Player from "@/components/Player.vue"
 
-export default {
-  components: { SimpleButton },
+export default  {
+  components: { Player },
   name: 'App',
   data() {
     return {
@@ -106,16 +63,13 @@ export default {
         "names": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
         "balances": [0,0,0,0,0,0,0,0,0],
       },
-      players: [
-        {userID: "c63p432n1fdk5k0aeta0", status: "MANUAL", seatID:0,connType: "NONE",isActivated: true,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta1", status: "MANUAL", seatID:100,connType: "NONE",isActivated: false,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta2", status: "AUTO", seatID:2,connType: "NONE",isActivated: false,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta3", status: "MANUAL", seatID:100,connType: "NONE",isActivated: false,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta4", status: "AUTO", seatID:4,connType: "NONE",isActivated: false,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta5", status: "MANUAL", seatID:100,connType: "NONE",isActivated: false,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta6", status: "MANUAL", seatID:100,connType: "NONE",isActivated: false,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta7", status: "MANUAL", seatID:100,connType: "NONE",isActivated: false,round:0, betvol:100,greeting:"Hi"},
-        {userID: "c63p432n1fdk5k0aeta8", status: "MANUAL", seatID:100,connType: "NONE",isActivated: false,round:0, betvol:100,greeting:"Hi"}
+      playersGroup: [
+        { index: 0, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
+        { index: 1, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
+        { index: 2, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
+        { index: 3, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
+        { index: 4, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
+        { index: 5, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
       ],
       socket: null,
       rcvMessage: "",
@@ -126,22 +80,9 @@ export default {
       userStatus: "",
       betvolTotal: 50,
       counter: 0,
-      countFocus: [false, false, false, false, false, false, false, false, false],
+      countFocus: [true, false, false, false, false, false, false, false, false],
       countIndex: 0,
-      testValue: 0,
-      btncolors: [
-        "gray",
-        "yellow",
-        "orange",
-        "red",
-        "green",
-        "teal",
-        "blue",
-        "indigo",
-        "purple",
-        "pink"
-      ],
-      btnsizes: ["lg", "md", "sm"]
+      testValue: 0
     }
   },
   mounted() {
@@ -179,26 +120,6 @@ export default {
     },
     getCountFocus(seatID) {
       this.countFocus[seatID] = false
-      // this.players.sort(this.sortSeatID)
-      // console.log(this.players)
-      let i = seatID
-      do
-      {
-        i++
-        if(i > 8) { i = 0 }
-        if(this.players[i].seatID != 100) {
-          if(this.players[i].connType != "NONE" || this.players[i].connType != "TIMEOUT" ||this.players[i].connType != "CLOSE") {
-            this.countFocus[this.players[i].seatID] = true
-            this.countIndex = this.players[i].seatID
-            break
-          }
-        } else if (this.players[i].seatID == seatID) {
-          this.countFocus[seatID] = false
-          this.countIndex = seatID
-          break
-        }
-      }
-      while (i<9)
     },
     testButton() {
       this.testValue++
@@ -231,6 +152,39 @@ export default {
           this.roomMsg.balances = rcvJson.balances
           console.log("Room data arrived:")
           console.log(this.roomMsg)
+
+          let currentSeatID = 0
+          let startPoint = 0
+
+          let i = 0
+          for (i=0; i<6; i++) {
+            if(this.roomMsg.names[i] == "LoginU") {
+              currentSeatID = i
+              break
+            }
+          }
+
+          startPoint = currentSeatID + 2
+          if(startPoint > 5) {
+            startPoint = startPoint - 6
+          }
+
+          let j = 0
+          for (i=0; i<6; i++) {
+            j = i
+            if(i == 3) { j = 5 }
+            if(i == 5) { j = 3 }
+            this.playersGroup[j].playerName = this.roomMsg.names[startPoint]
+            this.playersGroup[j].balance = this.roomMsg.balances[startPoint]
+            this.playersGroup[j].focus = this.countFocus[startPoint]
+            this.playersGroup[j].bvol = this.roomMsg.bvol
+            this.playersGroup[j].counter = this.counter
+            startPoint++
+            if(startPoint > 5) {
+              startPoint = 0
+            }
+          }
+          
         } else {
           console.log("Cards data:")
           console.log(rcvJson)
@@ -255,7 +209,7 @@ export default {
       this.roomMsg.msgType = "LEAVE"
       this.roomMsg.name = "LoginU"
       this.socket.send(JSON.stringify(this.roomMsg))
-    }
+    },
   }
 }
 </script>
@@ -269,41 +223,23 @@ export default {
   color: #2c3e50;
   margin-top: 20px;
 }
-div {
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-.one-third{
-  width:30%;
-  height:110px;
-  background:rgb(246, 255, 192);
+
+.row-players {
+  margin: 5px 5px;
+  width:100%;
+  height:120;
+  background:rgb(255, 255, 255);
   float:left;
-  border-style: solid;
-  border-color: gray;
-  margin: 3px 3px;
 }
 .row-middle {
-  margin: 5px;
-  width:100%;
+  margin: 5px 5px;
+  width:95%;
   height:200px;
   background:rgb(178, 198, 241);
-  float:right;
-}
-.row-middle {
-  margin-top: 5px;
-  width:100%;
-  height:200px;
-  background:rgb(178, 198, 241);
+  float:left;
   .betvolTotal {
     margin-top: 80px;
   }
-}
-.row-down {
-  margin-top: 5px;
-  width:100%;
-  height:100px;
-  background:rgb(185, 241, 184);
-  float:right;
 }
 .msg-btm {
   margin-top: 20px;
