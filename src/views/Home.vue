@@ -1,30 +1,51 @@
 
 <template>
-  <div class="join">
-    <button class="joinButton" @click="joinMessage()">LoginUser Join</button>
+  <div class="usercontrol">
+    <button class="confirmButton" @click="joinMessage()">Join</button>
+    <button class="confirmButton" style="margin-left:10px;" @click="leaveMessage()">Leave</button>
   </div>
   <div class="row-up">
-    <div class="main-left">
-      <div>
-      <span> {{ roomMsg.names[0] }}  </span>
-      <span v-if="countFocus[roomMsg.fID]" style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span>
-      </div>
-      <form :action="sendMessage" @click.prevent="onSubmit">
-        <label for="betvol">BetVol:   </label>
-        <input v-model="roomMsg.balances[0]" type="text" >
-        <input :disabled="!countFocus[roomMsg.fID]" type="submit" value="Player2 Send" @click="sendMessage(roomMsg.bvol)">
-      </form>
+    <div class="one-third">
+      <span> {{ roomMsg.names[0] }}  </span> <br>
+      <span> {{ roomMsg.balances[0] }}  </span> <br>
+      <span 
+        v-if="countFocus[roomMsg.fID]" 
+        style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span> <br>
+      <label for="betvol">BetVol:   </label> 
+      <input v-model="roomMsg.bvol" type="text" > <br>
+      <button 
+        :disabled="!countFocus[0]"
+        class="confirmButton" 
+        style="margin-top:10px;" 
+        @click="sendMessage(roomMsg.bvol)"> Confirm </button>
     </div>
-    <div class="main-right">
-      <div>
-      <span> {{ roomMsg.names[1] }} </span>
-      <span v-if="countFocus[roomMsg.fID]" style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span>
-      </div>
-      <form :action="sendMessage" @click.prevent="onSubmit">
-        <label for="betvol">BetVol:   </label>
-        <input v-model="roomMsg.bvol" type="text" >
-        <input :disabled="!countFocus[roomMsg.fID]" type="submit" value="Player3 Send" @click="sendMessage(roomMsg.bvol)"> <br><br>
-      </form>
+    <div class="one-third">
+      <span> {{ roomMsg.names[1] }}  </span> <br>
+      <span> {{ roomMsg.balances[1] }}  </span> <br>
+      <span 
+        v-if="countFocus[roomMsg.fID]" 
+        style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span> <br>
+      <label for="betvol">BetVol:   </label> 
+      <input v-model="roomMsg.bvol" type="text" > <br>
+      <button 
+        :disabled="!countFocus[1]"
+        class="confirmButton" 
+        style="margin-top:10px;" 
+        @click="sendMessage(roomMsg.bvol)"> Confirm </button>
+    </div>
+    <div class="one-third">
+      <span> {{ roomMsg.names[2] }}  </span> <br>
+      <span> {{ roomMsg.balances[2] }}  </span> <br>
+      <span 
+        v-if="countFocus[roomMsg.fID]" 
+        style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span> <br>
+      <label for="betvol">BetVol:   </label> 
+      <input v-model="roomMsg.bvol" type="text" > <br>
+      <button 
+        :disabled="!countFocus[2]"
+        class="confirmButton" 
+        style="margin-top:10px;" 
+        @click="sendMessage(roomMsg.bvol)"> Confirm </button>
     </div>
   </div>
 
@@ -36,7 +57,8 @@
 
   <div class="row-down">
     <div>
-      <span>{{ roomMsg.names[3] }}  </span>
+      <span>{{ roomMsg.names[3] }}  </span> <br>
+      <span> {{ roomMsg.balances[3] }}  </span>
       <span v-if="countFocus[roomMsg.fID]" style="margin-left:10px; color:red;font-size:24px"> {{ counter }} </span>
     </div>
     <form :action="sendMessage" @click.prevent="onSubmit">
@@ -52,37 +74,37 @@
       {{ rcvMessage }}
     </p>
     <button @click="WebSocketClose">CloseWS</button>
-  </div>
-  <div>
     <button @click="testButton"> Test </button>
+    <SimpleButton >外边框按钮</SimpleButton>
   </div>
 </template>
 
 <script>
-
+import SimpleButton from '../components/SimpleButton.vue'
 
 
 export default {
+  components: { SimpleButton },
   name: 'App',
   data() {
     return {
       // msgType-init: NONE
-      // msgType-Send: JOINED,WAITING,BNEXT,TIMEOUT,CLOSE
+      // msgType-Send: JOINED,WAITING,BNEXT,TIMEOUT,CLOSE,LEAVE
       // msgType-Received: Assigned,RNEW,BNEXT,RDONE (RNEW: Round new)
       // seatID: 0-8, >8-all
       roomMsg: {
         "tID": 0,
         "name": "loginU",
-        "msgType": "NEW",
-        "type": "BNEXT",
+        "msgType": "RNEW",
+        "reserve": "TBD",
         "seatID": 0,
         "bvol": 0,
-        "balance": 100000,
+        "balance": 0,
         "fID": 0,
         "status": ["MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL"],
         "types": ["NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE"],
         "names": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
-        "balances": [200000,200000,200000,200000,200000,200000,200000,200000,200000],
+        "balances": [0,0,0,0,0,0,0,0,0],
       },
       players: [
         {userID: "c63p432n1fdk5k0aeta0", status: "MANUAL", seatID:0,connType: "NONE",isActivated: true,round:0, betvol:100,greeting:"Hi"},
@@ -106,7 +128,20 @@ export default {
       counter: 0,
       countFocus: [false, false, false, false, false, false, false, false, false],
       countIndex: 0,
-      testValue: 0
+      testValue: 0,
+      btncolors: [
+        "gray",
+        "yellow",
+        "orange",
+        "red",
+        "green",
+        "teal",
+        "blue",
+        "indigo",
+        "purple",
+        "pink"
+      ],
+      btnsizes: ["lg", "md", "sm"]
     }
   },
   mounted() {
@@ -186,7 +221,7 @@ export default {
         if(rcvJson.tID == 0) {
           this.roomMsg.name = rcvJson.name
           this.roomMsg.msgType = rcvJson.msgType
-          this.roomMsg.type =rcvJson.type
+          this.roomMsg.reserve =rcvJson.reserve
           this.roomMsg.seatID = rcvJson.seatID
           this.roomMsg.bvol = rcvJson.bvol
           this.roomMsg.balance = rcvJson.balance
@@ -194,10 +229,12 @@ export default {
           this.roomMsg.status = rcvJson.status
           this.roomMsg.names = rcvJson.names
           this.roomMsg.balances = rcvJson.balances
-          console.log("Current room data arrived:")
+          console.log("Room data arrived:")
           console.log(this.roomMsg)
+        } else {
+          console.log("Cards data:")
+          console.log(rcvJson)
         }
-
       } catch(e) {
         console.log("error message", e.message)
       }
@@ -211,6 +248,12 @@ export default {
       this.roomMsg.msgType = "JOIN"
       this.roomMsg.name = "LoginU"
       this.roomMsg.balance = 150000
+      this.socket.send(JSON.stringify(this.roomMsg))
+    },
+    leaveMessage() {
+      this.roomMsg.tID = 0
+      this.roomMsg.msgType = "LEAVE"
+      this.roomMsg.name = "LoginU"
       this.socket.send(JSON.stringify(this.roomMsg))
     }
   }
@@ -230,17 +273,14 @@ div {
   padding-top: 5px;
   padding-bottom: 5px;
 }
-.main-left{
-  width:50%;
-  height:100px;
+.one-third{
+  width:30%;
+  height:110px;
   background:rgb(246, 255, 192);
   float:left;
-}
-.main-right{
-  width:50%;
-  height:100px;
-  background:pink;
-  float:right;
+  border-style: solid;
+  border-color: gray;
+  margin: 3px 3px;
 }
 .row-middle {
   margin: 5px;
@@ -272,7 +312,7 @@ div {
   background:rgb(255, 255, 255);
   float:right;
 }
-.joinButton {
+.confirmButton {
   color:blue;
 }
 
