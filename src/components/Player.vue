@@ -26,17 +26,35 @@
   }
 }
 
+.up-left{
+  width:50%;
+  height:50%;
+  float:left;
+}
+.up-right{
+  width:50%;
+  height:50%;
+  float:left;
+  color:red;
+  font-size:0.8em;
+}
+
+
 </style>
 
 <template>
-    <div :class="[focus? 'one-thirdFocus': 'one-third']">
-        <span> {{ playerName }}  </span> <br>
-        <span> {{ balance }}  </span> <br>
-        <span 
-            class="counter"
-            v-if="focus" 
-        > {{ counter }} </span> <br>
+  <div :class="[focus? 'one-thirdFocus': 'one-third']">
+    <div class="up-left">
+      <span> {{ playerName }}  </span> <br>
+      <span> {{ balance }}  </span> <br>
     </div>
+    <div class="up-right">
+      <span
+          class="counter"
+          v-if="focus"
+      > {{ counter }} </span> <br>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -46,13 +64,9 @@ export default defineComponent({
   name: 'Player',
   methods: {
     sendMessage(bvol) {
-    //  this.socket.send(JSON.stringify(msg))
-
-      // this.getCountFocus(player.seatID)
-      // this.counter = 15
       bvol = 0
     }
-  },  
+  },
   props: {
     index: {
       type: Number,
