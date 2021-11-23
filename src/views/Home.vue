@@ -5,7 +5,7 @@
     <button class="fourthButton"  @click="leaveMessage()">Leave</button>
   </div>
   <div class="row-players">
-    <Player 
+    <Player
       v-for="player in playersGroup.slice(0,3)"
       :key="player.index"
       v-bind="player"
@@ -24,7 +24,7 @@
   </div>
 
   <div class="row-players">
-    <Player 
+    <Player
       v-for="player in playersGroup.slice(3,6)"
       :key="player.index"
       v-bind="player"
@@ -79,6 +79,13 @@ export default  {
         "names": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
         "balances": [0,0,0,0,0,0,0,0,0],
       },
+      cards: {
+        "tID": 0,
+        "cardsName": "UNKNOWN",
+        "cardsPoints": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        "cardsSuits": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        "cardsTypes": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
+      },
       playersGroup: [
         { index: 0, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
         { index: 1, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
@@ -108,8 +115,9 @@ export default  {
     }
   },
   mounted() {
-    localStorage.setItem("LoginUser","dev21666") 
-    localStorage.setItem("Balance","320000") 
+    localStorage.setItem("LoginUser","dev21666")
+    localStorage.setItem("Balance","320000")
+    localStorage.setItem("RoomID","0")
 
     this.socket = new WebSocket("ws://140.143.149.188:9080/ws")
     this.socket.onclose = () => {
@@ -188,56 +196,65 @@ export default  {
       this.rcvMessage = evt.data
       try {
         rcvJson = JSON.parse(evt.data)
-        if(rcvJson.tID == 0) {
-          this.roomMsg.name = rcvJson.name
-          this.roomMsg.msgType = rcvJson.msgType
-          this.roomMsg.reserve =rcvJson.reserve
-          this.roomMsg.seatID = rcvJson.seatID
-          this.roomMsg.bvol = rcvJson.bvol
-          this.roomMsg.balance = rcvJson.balance
-          this.roomMsg.fID = rcvJson.fID
-          this.roomMsg.status = rcvJson.status
-          this.roomMsg.names = rcvJson.names
-          this.roomMsg.balances = rcvJson.balances
-          console.log("Room data arrived:")
-          console.log(this.roomMsg)
+        if(rcvJson.tID == parseInt(localStorage.getItem("RoomID"))) {
+          if(rcvJson.cardsName == "jhCards") {
+            this.cards.tID = rcvJson.tID
+            this.cards.cardsName =rcvJson.cardsName
+            this.cards.cardsPoints = rcvJson.cardsPoints
+            this.cards.cardsSuits = rcvJson.cardsSuits
+            this.cards.cardsTypes = rcvJson.cardsTypes
+            console.log("Cards data received:")
+            console.log(this.cards)
+          } else {
+            this.roomMsg.name = rcvJson.name
+            this.roomMsg.msgType = rcvJson.msgType
+            this.roomMsg.reserve =rcvJson.reserve
+            this.roomMsg.seatID = rcvJson.seatID
+            this.roomMsg.bvol = rcvJson.bvol
+            this.roomMsg.balance = rcvJson.balance
+            this.roomMsg.fID = rcvJson.fID
+            this.roomMsg.status = rcvJson.status
+            this.roomMsg.names = rcvJson.names
+            this.roomMsg.balances = rcvJson.balances
+            console.log("Room data received:")
+            console.log(this.roomMsg)
 
-          let currentSeatID = 0
-          let startPoint = 0
+            let currentSeatID = 0
+            let startPoint = 0
 
-          let i = 0
-          for (i=0; i<6; i++) {
-            if(this.roomMsg.names[i] == localStorage.getItem("LoginUser")) {
-              currentSeatID = i
-              localStorage.setItem("seatID",currentSeatID) 
-              break
+            let i = 0
+            for (i=0; i<6; i++) {
+              if(this.roomMsg.names[i] == localStorage.getItem("LoginUser")) {
+                currentSeatID = i
+                localStorage.setItem("seatID",currentSeatID)
+                break
+              }
             }
-          }
 
-          startPoint = currentSeatID + 2
-          if(startPoint > 5) {
-            startPoint = startPoint - 6
-          }
-
-          let j = 0
-          for (i=0; i<6; i++) {
-            j = i
-            if(i == 3) { j = 5 }
-            if(i == 5) { j = 3 }
-            this.playersGroup[j].playerName = this.roomMsg.names[startPoint]
-            this.playersGroup[j].balance = this.roomMsg.balances[startPoint]
-            this.playersGroup[j].focus = this.countFocus[startPoint]
-            this.playersGroup[j].bvol = this.roomMsg.bvol
-            this.playersGroup[j].counter = this.counter
-            startPoint++
+            startPoint = currentSeatID + 2
             if(startPoint > 5) {
-              startPoint = 0
+              startPoint = startPoint - 6
+            }
+
+            let j = 0
+            for (i=0; i<6; i++) {
+              j = i
+              if(i == 3) { j = 5 }
+              if(i == 5) { j = 3 }
+              this.playersGroup[j].playerName = this.roomMsg.names[startPoint]
+              this.playersGroup[j].balance = this.roomMsg.balances[startPoint]
+              this.playersGroup[j].focus = this.countFocus[startPoint]
+              this.playersGroup[j].bvol = this.roomMsg.bvol
+              this.playersGroup[j].counter = this.counter
+              startPoint++
+              if(startPoint > 5) {
+                startPoint = 0
+              }
             }
           }
-          
+
         } else {
-          console.log("Cards data:")
-          console.log(rcvJson)
+          console.log("Other room data, ignored!")
         }
       } catch(e) {
         console.log("error message", e.message)
