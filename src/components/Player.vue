@@ -1,24 +1,24 @@
 <style lang="scss" scoped>
 .one-third{
-  width:30%;
-  height:100px;
+  width:20%;
+  height:120px;
   background:rgb(246, 255, 192);
   float:left;
   border-style: solid;
   border-color: gray;
   padding: 10px;
-  margin: 3px 3px;
+  margin: 5px 10px;
 }
 
 .one-thirdFocus{
-  width:30%;
-  height:100px;
+  width:20%;
+  height:120px;
   background:rgb(246, 255, 192);
   float:left;
   border-style: solid;
   border-color: blue;
   padding: 10px;
-  margin: 3px 3px;
+  margin: 5px 10px;
   .counter {
       padding: 20px;
       color:red;
@@ -38,8 +38,10 @@
   color:red;
   font-size:0.8em;
 }
-
-
+.down-cards{
+  height:50%;
+  float:left;
+}
 </style>
 
 <template>
@@ -54,13 +56,20 @@
           v-if="focus"
       > {{ counter }} </span> <br>
     </div>
+    <div class="down-cards">
+      <Card/> 
+      <Card/> 
+      <Card/>
+    </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
+import Card from '@/components/Card.vue'
 
 export default defineComponent({
+  components: { Card },
   name: 'Player',
   methods: {
     sendMessage(bvol) {

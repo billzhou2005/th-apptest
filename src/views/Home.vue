@@ -286,6 +286,8 @@ export default  {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  justify-content: center;
   text-align: center;
   color: #2c3e50;
   margin-top: 20px;
@@ -300,8 +302,8 @@ export default  {
   justify-content: center;
 }
 .row-middle {
-  margin: 0px 30px;
-  width:95%;
+  margin: auto auto;
+  width:75%;
   height:100px;
   background:rgb(178, 198, 241);
   display: flex;
