@@ -6,6 +6,7 @@
   float:left;
   border-style: solid;
   border-color: gray;
+  border-radius: 15px;
   padding: 10px;
   margin: 5px 10px;
 }
@@ -17,6 +18,7 @@
   float:left;
   border-style: solid;
   border-color: blue;
+  border-radius: 15px;
   padding: 10px;
   margin: 5px 10px;
   .counter {
