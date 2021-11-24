@@ -5,6 +5,7 @@
   height:60px;
   color: #000;
   background-color: white;
+  padding: 2px;
   border-style: solid;
   border-width: 1.2px;
   border-color: grey;
@@ -15,8 +16,8 @@
 
 <template>
   <div class="card">
-    <span>10</span> <br>
-    <span>Suits</span>
+    <span>{{ points }}</span> <br>
+    <span>{{ suits }}</span>
   </div>
 </template>
 
@@ -26,7 +27,18 @@ import { defineComponent } from 'vue'
 export default defineComponent({  
   name: 'Card',
   props: {
-    msg: String
+    index: {
+      type: Number,
+      required: true
+    },
+    points: {
+      type: Number,
+      default: 0
+    },
+    suits: {
+      type: Number,
+      default: 0
+    },
   }
 })
 

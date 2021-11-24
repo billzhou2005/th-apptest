@@ -1,7 +1,7 @@
 <style lang="scss" scoped>
 .one-third{
   width:20%;
-  height:120px;
+  height:130px;
   background:rgb(246, 255, 192);
   float:left;
   border-style: solid;
@@ -13,7 +13,7 @@
 
 .one-thirdFocus{
   width:20%;
-  height:120px;
+  height:130px;
   background:rgb(246, 255, 192);
   float:left;
   border-style: solid;
@@ -59,9 +59,11 @@
       > {{ counter }} </span> <br>
     </div>
     <div class="down-cards">
-      <Card/> 
-      <Card/> 
-      <Card/>
+      <Card
+        v-for="card in playerCards"
+        :key="card.index"
+        v-bind="card"
+      /> 
     </div>
   </div>
 </template>
@@ -103,6 +105,14 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
+    playerCards: {
+      type: Array,
+      default: [
+        { index: 0, points: 1, suits: 1 },
+        { index: 1, points: 2, suits: 1 },
+        { index: 2, points: 3, suits: 1 },
+      ],
+    }
   }
 })
 </script>

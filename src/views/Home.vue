@@ -87,12 +87,15 @@ export default  {
         "cardsTypes": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
       },
       playersGroup: [
-        { index: 0, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
-        { index: 1, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
-        { index: 2, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
-        { index: 3, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
-        { index: 4, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
-        { index: 5, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false },
+        { index: 0, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },] },
+        { index: 1, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 2, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 3, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 4, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 5, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 6, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 7, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 8, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
       ],
       bCtlVol: [
         { ctrVol1:100, ctrVol2:200, ctrVol3:500, ctrVol4:1000, ctrVol5:2000, ctrVol6:5000},
@@ -197,6 +200,26 @@ export default  {
       try {
         rcvJson = JSON.parse(evt.data)
         if(rcvJson.tID == parseInt(localStorage.getItem("RoomID"))) {
+          let currentSeatID = 0
+          let startPoint = 0
+
+          // get the seaID, assigned by back-end or user slected(TBI)
+          let i = 0
+          for (i=0; i<6; i++) {
+            if(this.roomMsg.names[i] == localStorage.getItem("LoginUser")) {
+              currentSeatID = i
+              localStorage.setItem("seatID",currentSeatID)
+              break
+            }
+          }
+
+          // TOP player Line(0,1,2): startPoint is first player as the left-top
+          // Bottom player Line(5,4,3):
+          startPoint = currentSeatID + 2
+          if(startPoint > 5) {
+            startPoint = startPoint - 6
+          }
+          
           if(rcvJson.cardsName == "jhCards") {
             this.cards.tID = rcvJson.tID
             this.cards.cardsName =rcvJson.cardsName
@@ -218,23 +241,6 @@ export default  {
             this.roomMsg.balances = rcvJson.balances
             console.log("Room data received:")
             console.log(this.roomMsg)
-
-            let currentSeatID = 0
-            let startPoint = 0
-
-            let i = 0
-            for (i=0; i<6; i++) {
-              if(this.roomMsg.names[i] == localStorage.getItem("LoginUser")) {
-                currentSeatID = i
-                localStorage.setItem("seatID",currentSeatID)
-                break
-              }
-            }
-
-            startPoint = currentSeatID + 2
-            if(startPoint > 5) {
-              startPoint = startPoint - 6
-            }
 
             let j = 0
             for (i=0; i<6; i++) {
