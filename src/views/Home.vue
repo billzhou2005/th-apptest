@@ -86,16 +86,17 @@ export default  {
         "cardsSuits": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         "cardsTypes": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
       },
+      // BEO:Back-end order by array index
       playersGroup: [
-        { index: 0, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },] },
-        { index: 1, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-        { index: 2, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-        { index: 3, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-        { index: 4, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-        { index: 5, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-        { index: 6, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-        { index: 7, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-        { index: 8, playerName: "UNKNOWN", balance: 0, bvol: 0, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 0, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },] },
+        { index: 1, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 2, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 3, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 4, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 5, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 6, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 7, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+        { index: 8, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
       ],
       bCtlVol: [
         { ctrVol1:100, ctrVol2:200, ctrVol3:500, ctrVol4:1000, ctrVol5:2000, ctrVol6:5000},
@@ -200,10 +201,14 @@ export default  {
       try {
         rcvJson = JSON.parse(evt.data)
         if(rcvJson.tID == parseInt(localStorage.getItem("RoomID"))) {
+          
+          // currentSeatID is bottom-middle, it is from back-end
           let currentSeatID = 0
+
+          // display point = 0(top-left) match to ->back-end seatID
           let startPoint = 0
 
-          // get the seaID, assigned by back-end or user slected(TBI)
+          // get the seaID, assigned by back-end or [user slected(ToBeImplemente)]
           let i = 0
           for (i=0; i<6; i++) {
             if(this.roomMsg.names[i] == localStorage.getItem("LoginUser")) {
@@ -228,7 +233,28 @@ export default  {
             this.cards.cardsTypes = rcvJson.cardsTypes
             console.log("Cards data received:")
             console.log(this.cards)
-          } else {
+
+            // The room has 6 person in this test program
+            let j =0
+            let BEO =0
+            for(i=0;i<6;i++) {
+              BEO = this.playersGroup[i].BEO
+              this.playersGroup[i].cardType = this.cards.cardsTypes[BEO]
+              for(j=0;j<3;j++) {
+                this.playersGroup[i].playerCards[j].points = this.cards.cardsPoints[3*BEO+j]
+                this.playersGroup[i].playerCards[j].suits = this.cards.cardsSuits[3*BEO+j]
+              }
+
+              // init cardShow
+              if(this.playersGroup[i].playerName == localStorage.getItem("LoginUser")) {
+                this.playersGroup[i].cardShow = true
+              } else {
+                this.playersGroup[i].cardShow = false
+              }
+            }
+            console.log("playersGroup updated:")
+            console.log(this.playersGroup)
+        } else {
             this.roomMsg.name = rcvJson.name
             this.roomMsg.msgType = rcvJson.msgType
             this.roomMsg.reserve =rcvJson.reserve
@@ -242,15 +268,16 @@ export default  {
             console.log("Room data received:")
             console.log(this.roomMsg)
 
+            // playersGroup[j], j is display order
             let j = 0
             for (i=0; i<6; i++) {
               j = i
               if(i == 3) { j = 5 }
               if(i == 5) { j = 3 }
+              this.playersGroup[j].BEO = startPoint
               this.playersGroup[j].playerName = this.roomMsg.names[startPoint]
               this.playersGroup[j].balance = this.roomMsg.balances[startPoint]
               this.playersGroup[j].focus = this.countFocus[startPoint]
-              this.playersGroup[j].bvol = this.roomMsg.bvol
               this.playersGroup[j].counter = this.counter
               startPoint++
               if(startPoint > 5) {

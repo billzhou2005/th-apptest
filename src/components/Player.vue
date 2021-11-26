@@ -58,7 +58,7 @@
           v-if="focus"
       > {{ counter }} </span> <br>
     </div>
-    <div class="down-cards">
+    <div v-show="cardShow" class="down-cards">
       <Card
         v-for="card in playerCards"
         :key="card.index"
@@ -93,9 +93,13 @@ export default defineComponent({
       type: Number,
       default: 0
     },
-    bvol: {
-      type: Number,
+    cardType: {
+      type: String,
       default: 0
+    },
+    cardShow: {
+      type: Boolean,
+      default: false
     },
     counter: {
       type: Number,
