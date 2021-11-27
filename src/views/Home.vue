@@ -1,45 +1,52 @@
 
 <template>
-  <div class="usercontrol">
-    <button class="secondaryButton" @click="joinMessage()">Join</button>
-    <button class="fourthButton"  @click="leaveMessage()">Leave</button>
+<div class="main">
+  <div class="main-left">
+    <div class="usercontrol">
+      <button class="secondaryButton" @click="joinMessage()">Join</button>
+      <button class="fourthButton"  @click="leaveMessage()">Leave</button>
+      <button class="thirdButton"  @click="newRoundTest()">NewRound</button>
+    </div>
   </div>
-  <div class="row-players">
-    <Player
-      v-for="player in playersGroup.slice(0,3)"
-      :key="player.index"
-      v-bind="player"
-    />
-  </div>
+  <div class="main-right">
+    <div class="row-players">
+      <Player
+        v-for="player in roomPlayers.slice(0,3)"
+        :key="player.index"
+        v-bind="player"
+      />
+    </div>
 
-  <div class="row-middle">
-      <div class="item">
-        <span class="betvolTotalLable">{{ roomMsg.balance }}  </span> <br>
-      </div>
-  </div>
-  <div class="row-middle">
-      <div class="item">
-        <span class="currBvolLable">{{ currBvol }}  </span>
-      </div>
-  </div>
+    <div class="row-middle">
+        <div class="item">
+          <span class="betvolTotalLable">{{ roomMsg.balance }}  </span> <br>
+        </div>
+    </div>
+    <div class="row-middle">
+        <div class="item">
+          <span class="currBvolLable">{{ currBvol }}  </span>
+        </div>
+    </div>
 
-  <div class="row-players">
-    <Player
-      v-for="player in playersGroup.slice(3,6)"
-      :key="player.index"
-      v-bind="player"
-    />
-  </div>
+    <div class="row-players">
+      <Player
+        v-for="player in roomPlayers.slice(3,6)"
+        :key="player.index"
+        v-bind="player"
+      />
+    </div>
 
-  <div class="bcontrol">
-    <button class="circleBtn1" @click="bAdd1()"><span >壹千</span> </button>
-    <button class="circleBtn2" @click="bAdd2()"><span >贰千</span> </button>
-    <button class="circleBtn3" @click="bAdd3()"><span >伍千</span> </button>
-    <button class="circleBtn4" @click="bAdd4()"><span >壹万</span> </button>
-    <button class="circleBtn5" @click="bAdd5()"><span >贰万</span> </button>
-    <button class="circleBtn6" @click="bAdd6()"><span >伍万</span> </button>
+    <div class="bcontrol">
+      <button class="circleBtn1" @click="bAdd1()"><span >壹千</span> </button>
+      <button class="circleBtn2" @click="bAdd2()"><span >贰千</span> </button>
+      <button class="circleBtn3" @click="bAdd3()"><span >伍千</span> </button>
+      <button class="circleBtn4" @click="bAdd4()"><span >壹万</span> </button>
+      <button class="circleBtn5" @click="bAdd5()"><span >贰万</span> </button>
+      <button class="circleBtn6" @click="bAdd6()"><span >伍万</span> </button>
 
-    <button class="primaryButton" @click="bConfirm()">确定</button>
+      <button class="primaryButton" @click="bConfirm()">确定</button>
+      <button v-show="cardCheck" class="secondaryButton" @click="bCheckOwnCards()">看牌</button>
+    </div>
   </div>
 
   <div class="msg-btm" >
@@ -50,6 +57,7 @@
     <button @click="WebSocketClose">CloseWS</button>
     <button @click="testButton"> Test </button>
   </div>
+</div>
 </template>
 
 <script>
@@ -74,8 +82,8 @@ export default  {
         "bvol": 1000,
         "balance": 0,
         "fID": 0,
-        "status": ["MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL","MANUAL"],
-        "types": ["NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE","NONE"],
+        "focus": [false, false, false, false, false, false, false, false, false],
+        "cardsShow": [false, false, false, false, false, false, false, false, false],
         "names": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
         "balances": [0,0,0,0,0,0,0,0,0],
       },
@@ -87,7 +95,7 @@ export default  {
         "cardsTypes": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
       },
       // BEO:Back-end order by array index
-      playersGroup: [
+      roomPlayers: [
         { index: 0, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },] },
         { index: 1, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
         { index: 2, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
@@ -105,7 +113,7 @@ export default  {
       ],
       socket: null,
       rcvMessage: "",
-      showMsg: true,
+      cardCheck: false,
       tableID: 0,
       userID: "c63p432n1fdk5k0aeta1",
       selectedSeatID: 0,
@@ -170,6 +178,15 @@ export default  {
     bConfirm() {
       this.currBvol = 0
       console.log(this.currBvol)
+    },
+    bCheckOwnCards() {
+      this.roomMsg.tID = parseInt(localStorage.getItem("RoomID"))
+      this.roomMsg.name = localStorage.getItem("LoginUser")
+      this.roomMsg.msgType = "CHECKCARDS"
+      this.cardCheck = false
+
+      console.log(this.roomMsg)
+      this.socket.send(JSON.stringify(this.roomMsg))
     },
 
     sendMessage(bvol) {
@@ -238,22 +255,20 @@ export default  {
             let j =0
             let BEO =0
             for(i=0;i<6;i++) {
-              BEO = this.playersGroup[i].BEO
-              this.playersGroup[i].cardType = this.cards.cardsTypes[BEO]
+              BEO = this.roomPlayers[i].BEO
+              this.roomPlayers[i].cardType = this.cards.cardsTypes[BEO]
               for(j=0;j<3;j++) {
-                this.playersGroup[i].playerCards[j].points = this.cards.cardsPoints[3*BEO+j]
-                this.playersGroup[i].playerCards[j].suits = this.cards.cardsSuits[3*BEO+j]
+                this.roomPlayers[i].playerCards[j].points = this.cards.cardsPoints[3*BEO+j]
+                this.roomPlayers[i].playerCards[j].suits = this.cards.cardsSuits[3*BEO+j]
               }
-
-              // init cardShow
-              if(this.playersGroup[i].playerName == localStorage.getItem("LoginUser")) {
-                this.playersGroup[i].cardShow = true
-              } else {
-                this.playersGroup[i].cardShow = false
-              }
+              
+              // init cardCheck
+              if(this.roomPlayers[i].playerName == localStorage.getItem("LoginUser")) {
+                this.cardCheck = true
+              } 
             }
-            console.log("playersGroup updated:")
-            console.log(this.playersGroup)
+            console.log("roomPlayers Cards updated:")
+            console.log(this.roomPlayers)
         } else {
             this.roomMsg.name = rcvJson.name
             this.roomMsg.msgType = rcvJson.msgType
@@ -262,28 +277,40 @@ export default  {
             this.roomMsg.bvol = rcvJson.bvol
             this.roomMsg.balance = rcvJson.balance
             this.roomMsg.fID = rcvJson.fID
-            this.roomMsg.status = rcvJson.status
+            this.roomMsg.focus = rcvJson.focus
+            this.roomMsg.cardsShow = rcvJson.cardsShow
             this.roomMsg.names = rcvJson.names
             this.roomMsg.balances = rcvJson.balances
-            console.log("Room data received:")
-            console.log(this.roomMsg)
 
-            // playersGroup[j], j is display order
-            let j = 0
-            for (i=0; i<6; i++) {
-              j = i
-              if(i == 3) { j = 5 }
-              if(i == 5) { j = 3 }
-              this.playersGroup[j].BEO = startPoint
-              this.playersGroup[j].playerName = this.roomMsg.names[startPoint]
-              this.playersGroup[j].balance = this.roomMsg.balances[startPoint]
-              this.playersGroup[j].focus = this.countFocus[startPoint]
-              this.playersGroup[j].counter = this.counter
-              startPoint++
-              if(startPoint > 5) {
-                startPoint = 0
-              }
+            switch (this.roomMsg.msgType) {
+              case "JOIN":
+              case "LEAVE":
+              case "WAITING":
+              case "CHECKCARDS":  
+                console.log("Message ignored: ", this.roomMsg.msgType)
+                break
+
+              default:
+                console.log(this.roomMsg)
+                // roomPlayers[j], j is display order
+                let j = 0
+                for (i=0; i<6; i++) {
+                  j = i
+                  if(i == 3) { j = 5 }
+                  if(i == 5) { j = 3 }
+                  this.roomPlayers[j].BEO = startPoint
+                  this.roomPlayers[j].playerName = this.roomMsg.names[startPoint]
+                  this.roomPlayers[j].balance = this.roomMsg.balances[startPoint]
+                  this.roomPlayers[j].focus = this.roomMsg.focus[startPoint]
+                  this.roomPlayers[j].cardShow = this.roomMsg.cardsShow[startPoint]
+                  this.roomPlayers[j].counter = this.counter
+                  startPoint++
+                  if(startPoint > 5) {
+                    startPoint = 0
+                  }
+                }
             }
+
           }
 
         } else {
@@ -310,6 +337,10 @@ export default  {
       this.roomMsg.name = localStorage.getItem("LoginUser")
       this.socket.send(JSON.stringify(this.roomMsg))
     },
+    newRoundTest() {
+      this.roomMsg.msgType = "NEWROUND"
+      this.socket.send(JSON.stringify(this.roomMsg))
+    },
   }
 }
 </script>
@@ -325,13 +356,34 @@ export default  {
   color: #2c3e50;
   margin-top: 20px;
 }
-
+.main {
+  width:100%;
+  height:100%;
+  justify-content: center;
+}
+.main-left {
+  margin: 0px 0px;
+  width:10%;
+  height:600px;
+  background:rgb(220, 220, 220);
+  float: left;
+  display: flex;
+  justify-content: center;
+}
+.main-right {
+  margin: 0px 0px;
+  width:90%;
+  background:rgb(255, 255, 255);
+  float: left;
+  justify-content: center;
+}
 .row-players {
   margin: 5px 0px;
   width:100%;
   height:120;
   background:rgb(255, 255, 255);
   display: flex;
+  float: left;
   justify-content: center;
 }
 .row-middle {
