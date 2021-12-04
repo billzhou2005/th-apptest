@@ -6,6 +6,8 @@
       <button class="secondaryButton" @click="joinMessage()">Join</button>
       <button class="fourthButton"  @click="leaveMessage()">Leave</button>
       <button class="thirdButton"  @click="newRoundTest()">NewRound</button>
+      <button class="primaryButton"  @click="roomTestFunc()">Room Test</button>
+      <button class="secondaryButton"  @click="cardsTestFunc()">Cards Test</button>
     </div>
   </div>
   <div class="main-right">
@@ -73,6 +75,36 @@ export default  {
       // msgType-Send: JOINED,WAITING,BNEXT,TIMEOUT,CLOSE,LEAVE
       // msgType-Received: Assigned,RNEW,BNEXT,RDONE (RNEW: Round new)
       // seatID: 0-8, >8-all
+      player: {
+        "type": "PLAYER",
+        "rID": 0,
+        "pID": "e968cccc",
+        "msgType": "JOIN",
+        "name": "UNKNOWN",
+        "gameRound": 0,
+        "betRound": 0,
+        "seatID": 100,
+        "seatDID": 100,
+        "focus": false,
+        "checkCard": false,
+        "discard": false,
+        "betVol": 0,
+        "balance": 0,
+        "reserve": "TBD",
+      },
+      roomTest: {
+        "type": "ROOM",
+        "rID": 0,
+        "gameRound": 0,
+        "betRound": 0,
+        "defendSeat": 0,
+        "focuses": [false,false,false,false,false,false,false,false,false],
+        "players": ["UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN"],
+        "blances": [100000,100000,100000,100000,100000,100000,100000,100000,100000],
+        "checkCards": [false,false,false,false,false,false,false,false,false],
+        "discards": [false,false,false,false,false,false,false,false,false],
+        "reserve": "",
+      },
       roomMsg: {
         "tID": 0,
         "name": "UNKNOWN",
@@ -88,11 +120,14 @@ export default  {
         "balances": [0,0,0,0,0,0,0,0,0],
       },
       cards: {
-        "tID": 0,
+        "type": "CARDS",
         "cardsName": "UNKNOWN",
+        "rID": 0,
+        "gameRound": 0,
         "cardsPoints": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         "cardsSuits": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
         "cardsTypes": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
+        "reserve": "",
       },
       // BEO:Back-end order by array index
       roomPlayers: [
@@ -325,11 +360,17 @@ export default  {
       this.socket.close()
     },
     joinMessage() {
-      this.roomMsg.tID = 0
-      this.roomMsg.msgType = "JOIN"
-      this.roomMsg.name = localStorage.getItem("LoginUser")
-      this.roomMsg.balance = parseInt(localStorage.getItem("Balance"))
-      this.socket.send(JSON.stringify(this.roomMsg))
+      this.player.rID = 0
+      this.player.msgType = "JOIN"
+      this.player.name = localStorage.getItem("LoginUser")
+      this.player.balance = parseInt(localStorage.getItem("Balance"))
+      this.socket.send(JSON.stringify(this.player))
+    },
+    roomTestFunc() {
+      this.socket.send(JSON.stringify(this.roomTest))
+    },
+    cardsTestFunc() {
+      this.socket.send(JSON.stringify(this.cards))
     },
     leaveMessage() {
       this.roomMsg.tID = 0
