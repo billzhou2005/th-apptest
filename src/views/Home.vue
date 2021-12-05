@@ -81,8 +81,6 @@ export default  {
         "pID": "e968cccc",
         "msgType": "JOIN",
         "name": "UNKNOWN",
-        "gameRound": 0,
-        "betRound": 0,
         "seatID": 100,
         "seatDID": 100,
         "focus": false,
@@ -90,19 +88,22 @@ export default  {
         "discard": false,
         "betVol": 0,
         "balance": 0,
+        "robot": false,
         "reserve": "TBD",
       },
       roomTest: {
         "type": "ROOM",
         "rID": 0,
+        "status": "WAITING",
         "gameRound": 0,
         "betRound": 0,
         "defendSeat": 0,
         "focuses": [false,false,false,false,false,false,false,false,false],
         "players": ["UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN"],
         "blances": [100000,100000,100000,100000,100000,100000,100000,100000,100000],
-        "checkCards": [false,false,false,false,false,false,false,false,false],
-        "discards": [false,false,false,false,false,false,false,false,false],
+      //  "checkCards": [false,false,false,false,false,false,false,false,false],
+      //  "discards": [false,false,false,false,false,false,false,false,false],
+      //  "robots": [false,false,false,false,false,false,false,false,false],
         "reserve": "",
       },
       roomMsg: {
@@ -268,7 +269,7 @@ export default  {
               localStorage.setItem("seatID",currentSeatID)
               break
             }
-          }
+          } 
 
           // TOP player Line(0,1,2): startPoint is first player as the left-top
           // Bottom player Line(5,4,3):
@@ -350,6 +351,7 @@ export default  {
 
         } else {
           console.log("Other room data, ignored!")
+          console.log(rcvJson)
         }
       } catch(e) {
         console.log("error message", e.message)
@@ -362,8 +364,19 @@ export default  {
     joinMessage() {
       this.player.rID = 0
       this.player.msgType = "JOIN"
+      this.player.discard = true
       this.player.name = localStorage.getItem("LoginUser")
       this.player.balance = parseInt(localStorage.getItem("Balance"))
+      this.socket.send(JSON.stringify(this.player))
+    },
+    leaveMessage() {
+      this.player.rID = 0
+      this.player.msgType = "LEAVE"
+      this.player.name = localStorage.getItem("LoginUser")
+      this.player.seatDID = 100
+      this.player.focus = false
+      this.player.discard = true
+      this.player.betVol = 0
       this.socket.send(JSON.stringify(this.player))
     },
     roomTestFunc() {
@@ -371,12 +384,6 @@ export default  {
     },
     cardsTestFunc() {
       this.socket.send(JSON.stringify(this.cards))
-    },
-    leaveMessage() {
-      this.roomMsg.tID = 0
-      this.roomMsg.msgType = "LEAVE"
-      this.roomMsg.name = localStorage.getItem("LoginUser")
-      this.socket.send(JSON.stringify(this.roomMsg))
     },
     newRoundTest() {
       this.roomMsg.msgType = "NEWROUND"
