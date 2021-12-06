@@ -83,6 +83,7 @@ export default  {
         "name": "UNKNOWN",
         "seatID": 100,
         "seatDID": 100,
+        "betRound": 0,
         "focus": false,
         "checkCard": false,
         "discard": false,
@@ -97,13 +98,12 @@ export default  {
         "status": "WAITING",
         "gameRound": 0,
         "betRound": 0,
+        "focusID": 0,
+        "baseVol": 0,
+        "totalAmount": 0,
+        "lostSeat": 100,
+        "winnerSeat": 100,
         "defendSeat": 0,
-        "focuses": [false,false,false,false,false,false,false,false,false],
-        "players": ["UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN","UNKNOWN"],
-        "blances": [100000,100000,100000,100000,100000,100000,100000,100000,100000],
-      //  "checkCards": [false,false,false,false,false,false,false,false,false],
-      //  "discards": [false,false,false,false,false,false,false,false,false],
-      //  "robots": [false,false,false,false,false,false,false,false,false],
         "reserve": "",
       },
       roomMsg: {
@@ -254,7 +254,7 @@ export default  {
       try {
         rcvJson = JSON.parse(evt.data)
         if(rcvJson.tID == parseInt(localStorage.getItem("RoomID"))) {
-          
+
           // currentSeatID is bottom-middle, it is from back-end
           let currentSeatID = 0
 
@@ -269,7 +269,7 @@ export default  {
               localStorage.setItem("seatID",currentSeatID)
               break
             }
-          } 
+          }
 
           // TOP player Line(0,1,2): startPoint is first player as the left-top
           // Bottom player Line(5,4,3):
@@ -277,7 +277,7 @@ export default  {
           if(startPoint > 5) {
             startPoint = startPoint - 6
           }
-          
+
           if(rcvJson.cardsName == "jhCards") {
             this.cards.tID = rcvJson.tID
             this.cards.cardsName =rcvJson.cardsName
@@ -297,11 +297,11 @@ export default  {
                 this.roomPlayers[i].playerCards[j].points = this.cards.cardsPoints[3*BEO+j]
                 this.roomPlayers[i].playerCards[j].suits = this.cards.cardsSuits[3*BEO+j]
               }
-              
+
               // init cardCheck
               if(this.roomPlayers[i].playerName == localStorage.getItem("LoginUser")) {
                 this.cardCheck = true
-              } 
+              }
             }
             console.log("roomPlayers Cards updated:")
             console.log(this.roomPlayers)
@@ -322,7 +322,7 @@ export default  {
               case "JOIN":
               case "LEAVE":
               case "WAITING":
-              case "CHECKCARDS":  
+              case "CHECKCARDS":
                 console.log("Message ignored: ", this.roomMsg.msgType)
                 break
 
