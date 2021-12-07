@@ -7,7 +7,6 @@
       <button class="fourthButton"  @click="leaveMessage()">Leave</button>
       <button class="thirdButton"  @click="newRoundTest()">NewRound</button>
       <button class="primaryButton"  @click="roomTestFunc()">Room Test</button>
-      <button class="secondaryButton"  @click="cardsTestFunc()">Cards Test</button>
     </div>
   </div>
   <div class="main-right">

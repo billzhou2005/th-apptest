@@ -58,12 +58,12 @@
           v-if="focus"
       > {{ counter }} </span> <br>
     </div>
-    <div v-show="cardShow" class="down-cards">
+    <div v-show="checkCard" class="down-cards">
       <Card
         v-for="card in playerCards"
         :key="card.index"
         v-bind="card"
-      /> 
+      />
     </div>
   </div>
 </template>
@@ -93,11 +93,11 @@ export default defineComponent({
       type: Number,
       default: 0
     },
-    cardType: {
+    cardsType: {
       type: String,
       default: 0
     },
-    cardShow: {
+    checkCard: {
       type: Boolean,
       default: false
     },

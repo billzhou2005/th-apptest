@@ -6,70 +6,48 @@ export default  {
   data() {
     return {
         roomPlayers: [
-            { index: 0, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },] },
-            { index: 1, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 2, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 3, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 4, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 5, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 6, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 7, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 8, BEO: 0, playerName: "UNKNOWN", balance: 0, cardType: "TBD", cardShow: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+            { index: 0, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },] },
+            { index: 1, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+            { index: 2, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+            { index: 3, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+            { index: 4, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+            { index: 5, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+            { index: 6, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+            { index: 7, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
+            { index: 8, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
         ],
         player: {
-        "type": "PLAYER",
-        "rID": 0,
-        "pID": "e968cccc",
-        "msgType": "JOIN",
-        "name": "UNKNOWN",
-        "seatID": 100,
-        "seatDID": 100,
-        "betRound": 0,
-        "focus": false,
-        "checkCard": false,
-        "discard": false,
-        "betVol": 0,
-        "balance": 0,
-        "robot": false,
-        "reserve": "TBD",
+        type: "PLAYER",
+        rID: 0,
+        pID: "e968cccc",
+        msgType: "JOIN",
+        name: "UNKNOWN",
+        seatID: 100,
+        seatDID: 100,
+        betRound: 0,
+        focus: false,
+        checkCard: false,
+        discard: true,
+        betVol: 0,
+        balance: 0,
+        robot: false,
+        cards: { points: 0, suits: 0 }[3],
+        cardsType: "Highcard",
+        reserve: "TBD",
       },
       roomShare: {
-        "type": "ROOM",
-        "rID": 0,
-        "status": "WAITING",
-        "gameRound": 0,
-        "betRound": 0,
-        "focusID": 0,
-        "baseVol": 0,
-        "totalAmount": 0,
-        "lostSeat": 100,
-        "winnerSeat": 100,
-        "defendSeat": 0,
-        "reserve": "",
-      },
-      roombak: {
-        "tID": 0,
-        "name": "UNKNOWN",
-        "msgType": "RNEW",
-        "reserve": "TBD",
-        "seatID": 0,
-        "bvol": 1000,
-        "balance": 0,
-        "fID": 0,
-        "focus": [false, false, false, false, false, false, false, false, false],
-        "cardsShow": [false, false, false, false, false, false, false, false, false],
-        "names": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
-        "balances": [0,0,0,0,0,0,0,0,0],
-      },
-      cards: {
-        "type": "CARDS",
-        "cardsName": "UNKNOWN",
-        "rID": 0,
-        "gameRound": 0,
-        "cardsPoints": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        "cardsSuits": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-        "cardsTypes": ["TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD","TBD"],
-        "reserve": "",
+        type: "ROOM",
+        rID: 0,
+        status: "WAITING",
+        gameRound: 0,
+        betRound: 0,
+        focusID: 0,
+        compareID: 0,
+        baseVol: 0,
+        totalAmount: 0,
+        lostSeat: 100,
+        defendSeat: 0,
+        reserve: "",
       },
       bCtlVol: [
         { ctrVol1:100, ctrVol2:200, ctrVol3:500, ctrVol4:1000, ctrVol5:2000, ctrVol6:5000},
@@ -203,7 +181,7 @@ export default  {
             if(startPoint > 5) {
                 startPoint = startPoint - 6
             }
-            
+
             if(rcvJson.type == "PLAYER") {
                 this.player.pID = rcvJson.pID
                 this.player.msgType = rcvJson.msgType
@@ -217,10 +195,23 @@ export default  {
                 this.player.betVol = rcvJson.betVol
                 this.player.balance = rcvJson.balance
                 this.player.robot = rcvJson.robot
+                this.player.cards = rcvJson.cards
+                this.player.cardsType = rcvJson.cardsType
                 this.player.reserve = rcvJson.reserve
 
-                console.log("PLAYER", this.player)
+                this.roomPlayers[this.player.seatID].playerName = this.player.name
+                this.roomPlayers[this.player.seatID].balance = this.player.balance
+                this.roomPlayers[this.player.seatID].discard = this.player.discard
+                this.roomPlayers[this.player.seatID].cardsType = this.player.cardsType
+                this.roomPlayers[this.player.seatID].checkCard = this.player.checkCard
+                this.roomPlayers[this.player.seatID].focus = this.player.focus
+                console.log("roomPlayers", this.roomPlayers)
 
+                let j = 0
+                for (j=0; j<3; j++){
+                  this.roomPlayers[this.player.seatID].playerCards[j].points = this.player.cards[j].points
+                  this.roomPlayers[this.player.seatID].playerCards[j].suits = this.player.cards[j].suits
+                }
                 /*
                 // The room has 6 person in this test program
                 let j =0
@@ -243,13 +234,23 @@ export default  {
                 this.roomShare.gameRound = rcvJson.gameRound
                 this.roomShare.betRound = rcvJson.betRound
                 this.roomShare.focusID = rcvJson.focusID
+                this.roomShare.compareID = rcvJson.compareID
                 this.roomShare.baseVol = rcvJson.baseVol
                 this.roomShare.totalAmount = rcvJson.totalAmount
                 this.roomShare.lostSeat = rcvJson.lostSeat
-                this.roomShare.winnerSeat = rcvJson.winnerSeat
                 this.roomShare.defendSeat = rcvJson.defendSeat
                 this.roomShare.reserve = rcvJson.reserve
                 console.log("roomShare", this.roomShare)
+                if(this.roomShare.focusID < 9) {
+                  this.roomPlayers[this.roomShare.focusID].focus = true
+                  let i
+                  for(i=0; i<9; i++) {
+                    if(i != this.roomShare.focusID) {
+                      this.roomPlayers[i].focus = false
+                    }
+                  }
+                }
+
             } else {
                 console.log("Not ROOM or PLAYER data")
             }
@@ -287,9 +288,6 @@ export default  {
     },
     roomTestFunc() {
       this.socket.send(JSON.stringify(this.roomTest))
-    },
-    cardsTestFunc() {
-      this.socket.send(JSON.stringify(this.cards))
     },
     newRoundTest() {
       this.roomShare.msgType = "NEWROUND"
