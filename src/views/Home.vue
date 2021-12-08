@@ -20,7 +20,7 @@
 
     <div class="row-middle">
         <div class="item">
-          <span class="betvolTotalLable">{{ roomShare.balance }}  </span> <br>
+          <span class="betvolTotalLable">{{ roomShare.totalAmount }}  </span> <br>
         </div>
     </div>
     <div class="row-middle">

@@ -31,8 +31,6 @@ export default  {
         betVol: 0,
         balance: 0,
         robot: false,
-        cards: { points: 0, suits: 0 }[3],
-        cardsType: "Highcard",
         reserve: "TBD",
       },
       roomShare: {
@@ -83,9 +81,10 @@ export default  {
     }
     this.socket.onopen = () => {
       console.log("Connection success")
-    //  msg.connType = "JOINED"
-    //  msg.status = "WAITING"
-    //  this.socket.send(JSON.stringify(msg))
+      this.player.rID = 0
+      this.player.msgType = "INITROOM"
+      this.player.name = localStorage.getItem("LoginUser")
+      this.socket.send(JSON.stringify(this.player))
     }
     this.socket.onmessage = (evt) => {
         this.acceptMsg(evt)
@@ -168,104 +167,131 @@ export default  {
             // display point = 0(top-left) match to ->back-end seatID
             let startPoint = 0
 
-            // get the seaID, assigned by back-end or [user slected(ToBeImplemente)]
-            /* let i = 0
-            for (i=0; i<6; i++) {
-                if(this.roomShare.names[i] == localStorage.getItem("LoginUser")) {
-                currentSeatID = i
-                localStorage.setItem("seatID",currentSeatID)
-                break
-                }
-            }*/
             startPoint = currentSeatID + 2
             if(startPoint > 5) {
                 startPoint = startPoint - 6
             }
+            // console.log(rcvJson.type,rcvJson)
+            switch (rcvJson.type) {
+              case "PLAYER":
+                if(rcvJson.msgType !="INITROOM") {
+                  console.log("PLAYER:", rcvJson)
+                  this.player.pID = rcvJson.pID
+                  this.player.msgType = rcvJson.msgType
+                  this.player.name = rcvJson.name
+                  this.player.seatID = rcvJson.seatID
+                  this.player.seatDID = rcvJson.seatDID
+                  this.player.betRound= rcvJson.betRound
+                  this.player.focus = rcvJson.focus
+                  this.player.checkCard = rcvJson.checkCard
+                  this.player.discard = rcvJson.discard
+                  this.player.betVol = rcvJson.betVol
+                  this.player.balance = rcvJson.balance
+                  this.player.robot = rcvJson.robot
+                  this.player.cards = rcvJson.cards
+                  this.player.reserve = rcvJson.reserve
 
-            if(rcvJson.type == "PLAYER") {
-                this.player.pID = rcvJson.pID
-                this.player.msgType = rcvJson.msgType
-                this.player.name = rcvJson.name
-                this.player.seatID = rcvJson.seatID
-                this.player.seatDID = rcvJson.seatDID
-                this.player.betRound= rcvJson.betRound
-                this.player.focus = rcvJson.focus
-                this.player.checkCard = rcvJson.checkCard
-                this.player.discard = rcvJson.discard
-                this.player.betVol = rcvJson.betVol
-                this.player.balance = rcvJson.balance
-                this.player.robot = rcvJson.robot
-                this.player.cards = rcvJson.cards
-                this.player.cardsType = rcvJson.cardsType
-                this.player.reserve = rcvJson.reserve
+                  let seatDID
+                  seatDID = this.player.seatID
+                  if(this.player.seatID == 3) {seatDID = 5}
+                  if(this.player.seatID == 5) {seatDID = 3}
 
-                this.roomPlayers[this.player.seatDID].playerName = this.player.name
-                this.roomPlayers[this.player.seatDID].balance = this.player.balance
-                this.roomPlayers[this.player.seatDID].discard = this.player.discard
-                this.roomPlayers[this.player.seatDID].cardsType = this.player.cardsType
-                this.roomPlayers[this.player.seatDID].checkCard = this.player.checkCard
-                this.roomPlayers[this.player.seatDID].focus = this.player.focus
-                console.log("roomPlayers", this.roomPlayers)
+                  this.roomPlayers[seatDID].playerName = this.player.name
+                  this.roomPlayers[seatDID].balance = this.player.balance
+                  this.roomPlayers[seatDID].discard = this.player.discard
+                  this.roomPlayers[seatDID].checkCard = this.player.checkCard
+                  this.roomPlayers[seatDID].focus = this.player.focus
+                  //console.log("roomPlayers", this.roomPlayers)
+                  /*
+                  // The room has 6 person in this test program
+                  let j =0
+                  let BEO =0
+                  for(i=0;i<6;i++) {
+                  BEO = this.roomPlayers[i].BEO
+                  this.roomPlayers[i].cardType = this.cards.cardsTypes[BEO]
+                  for(j=0;j<3;j++) {
+                      this.roomPlayers[i].playerCards[j].points = this.cards.cardsPoints[3*BEO+j]
+                      this.roomPlayers[i].playerCards[j].suits = this.cards.cardsSuits[3*BEO+j]
+                  }
 
-                let j = 0
-                for (j=0; j<3; j++){
-                  this.roomPlayers[this.player.seatDID].playerCards[j].points = this.player.cards[j].points
-                  this.roomPlayers[this.player.seatDID].playerCards[j].suits = this.player.cards[j].suits
+                  // init cardCheck
+                  if(this.roomPlayers[i].playerName == localStorage.getItem("LoginUser")) {
+                      this.cardCheck = true
+                  }
+                  } */
                 }
-                /*
-                // The room has 6 person in this test program
-                let j =0
-                let BEO =0
-                for(i=0;i<6;i++) {
-                BEO = this.roomPlayers[i].BEO
-                this.roomPlayers[i].cardType = this.cards.cardsTypes[BEO]
-                for(j=0;j<3;j++) {
-                    this.roomPlayers[i].playerCards[j].points = this.cards.cardsPoints[3*BEO+j]
-                    this.roomPlayers[i].playerCards[j].suits = this.cards.cardsSuits[3*BEO+j]
-                }
+              break
+              case "ROOM":
+                  this.roomShare.status = rcvJson.status
+                  this.roomShare.gameRound = rcvJson.gameRound
+                  this.roomShare.betRound = rcvJson.betRound
+                  this.roomShare.focusID = rcvJson.focusID
+                  this.roomShare.compareID = rcvJson.compareID
+                  this.roomShare.baseVol = rcvJson.baseVol
+                  this.roomShare.totalAmount = rcvJson.totalAmount
+                  this.roomShare.lostSeat = rcvJson.lostSeat
+                  this.roomShare.defendSeat = rcvJson.defendSeat
+                  this.roomShare.reserve = rcvJson.reserve
+                  console.log("roomShare", this.roomShare)
 
-                // init cardCheck
-                if(this.roomPlayers[i].playerName == localStorage.getItem("LoginUser")) {
-                    this.cardCheck = true
-                }
-                } */
-            } else if (rcvJson.type == "ROOM") {
-                this.roomShare.status = rcvJson.status
-                this.roomShare.gameRound = rcvJson.gameRound
-                this.roomShare.betRound = rcvJson.betRound
-                this.roomShare.focusID = rcvJson.focusID
-                this.roomShare.compareID = rcvJson.compareID
-                this.roomShare.baseVol = rcvJson.baseVol
-                this.roomShare.totalAmount = rcvJson.totalAmount
-                this.roomShare.lostSeat = rcvJson.lostSeat
-                this.roomShare.defendSeat = rcvJson.defendSeat
-                this.roomShare.reserve = rcvJson.reserve
-                console.log("roomShare", this.roomShare)
-                
-                let seatDID 
-                seatDID = this.roomShare.focusID
-                if(this.roomShare.focusID ==3) {
-                  seatDID = 5
-                }
-                if(this.roomShare.focusID ==5) {
-                  seatDID = 3
-                }
-                if(this.roomShare.focusID < 9) {
-                  this.roomPlayers[seatDID].focus = true
-                  let i
-                  for(i=0; i<9; i++) {
-                    if(i != seatDID) {
-                      this.roomPlayers[i].focus = false
+                  let seatDID
+                  seatDID = this.roomShare.focusID
+                  if(this.roomShare.focusID ==3) {
+                    seatDID = 5
+                  }
+                  if(this.roomShare.focusID ==5) {
+                    seatDID = 3
+                  }
+                  if(this.roomShare.focusID < 6) {
+                    this.roomPlayers[seatDID].focus = true
+                    let i
+                    for(i=0; i<6; i++) {
+                      if(i != seatDID) {
+                        this.roomPlayers[i].focus = false
+                      }
                     }
                   }
+                break
+              case "INITROOM":
+                console.log("InitRoom:", rcvJson)
+                let i
+                this.roomShare.totalAmount = rcvJson.totalAmount
+                for(i=0; i<6; i++) {
+                  if(i == 3) {
+                    this.roomPlayers[i].playerName = rcvJson.players[5]
+                    this.roomPlayers[i].balance = rcvJson.balances[5]
+                    this.roomPlayers[i].discard = rcvJson.discards[5]
+                  }else if(i == 5) {
+                    this.roomPlayers[i].playerName = rcvJson.players[3]
+                    this.roomPlayers[i].balance = rcvJson.balances[3]
+                    this.roomPlayers[i].discard = rcvJson.discards[3]
+                  }else{
+                    this.roomPlayers[i].playerName = rcvJson.players[i]
+                    this.roomPlayers[i].balance = rcvJson.balances[i]
+                    this.roomPlayers[i].discard = rcvJson.discards[i]
+                  }
                 }
-
-            } else {
-                console.log("Not ROOM or PLAYER data")
+              break
+              case "CARDS":
+                console.log("CARDS", rcvJson)
+                let j
+                for (i=0;i<9;i++) {
+                  let seatDID
+                  seatDID = i
+                  if(i == 3) {seatDID =5}
+                  if(i == 5) {seatDID =3}
+                  for (j=0;j<3;j++) {
+                    this.roomPlayers[i].playerCards[j].points = rcvJson.points[3*seatDID + j]
+                    this.roomPlayers[i].playerCards[j].suits = rcvJson.suits[3*seatDID + j]
+                    this.roomPlayers[i].cardsType = rcvJson.cardsTypes[seatDID]
+                  }
+                }
+                console.log("roomPlayers",this.roomPlayers)
+              break
+              default:
+                console.log("Data Ignored:", rcvJson)
             }
-
-
-        } else {
+        } else{
           console.log("Other room data, ignored!")
           console.log(rcvJson)
         }
