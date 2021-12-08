@@ -30,9 +30,21 @@ export default  {
         discard: true,
         betVol: 0,
         balance: 0,
+        allin: false,
         robot: false,
         reserve: "TBD",
       },
+      players: [
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
+      ],
       roomShare: {
         type: "ROOM",
         rID: 0,
@@ -63,7 +75,6 @@ export default  {
       betvolTotal: 0,
       currBvol:0,
       counter: 0,
-      countFocus: [false, false, false, true, false, false, false, false, false],
       countIndex: 0,
       testValue: 0
     }
@@ -139,18 +150,6 @@ export default  {
       // this.counter = 15
       bvol = 0
     },
-    getCountFocus(seatID) {
-      this.countFocus[seatID] = false
-    },
-    testButton() {
-      this.testValue++
-      console.log(this.testValue)
-      if(this.testValue > 8) {
-        this.testValue =0
-      }
-      this.getCountFocus(this.testValue)
-      console.log(this.countFocus)
-    },
     sortSeatID(a, b) {
       return a.seatID - b.seatID
     },
@@ -177,6 +176,8 @@ export default  {
               case "PLAYER":
                 if(rcvJson.msgType !="INITROOM") {
                   console.log("PLAYER:", rcvJson)
+                  this.player.type = rcvJson.type
+                  this.player.rID = rcvJson.rID
                   this.player.pID = rcvJson.pID
                   this.player.msgType = rcvJson.msgType
                   this.player.name = rcvJson.name
@@ -188,9 +189,30 @@ export default  {
                   this.player.discard = rcvJson.discard
                   this.player.betVol = rcvJson.betVol
                   this.player.balance = rcvJson.balance
+                  this.player.allin = rcvJson.allin
                   this.player.robot = rcvJson.robot
-                  this.player.cards = rcvJson.cards
                   this.player.reserve = rcvJson.reserve
+
+                  let seatID = rcvJson.seatID
+                  this.players[seatID].type = rcvJson.type
+                  this.players[seatID].rID = rcvJson.rID
+                  this.players[seatID].pID = rcvJson.pID
+                  this.players[seatID].msgType = rcvJson.msgType
+                  this.players[seatID].name = rcvJson.name
+                  this.players[seatID].seatID = rcvJson.seatID
+                  this.players[seatID].seatDID = rcvJson.seatDID
+                  this.players[seatID].betRound= rcvJson.betRound
+                  this.players[seatID].focus = rcvJson.focus
+                  this.players[seatID].checkCard = rcvJson.checkCard
+                  this.players[seatID].discard = rcvJson.discard
+                  this.players[seatID].betVol = rcvJson.betVol
+                  this.players[seatID].balance = rcvJson.balance
+                  this.players[seatID].allin = rcvJson.allin
+                  this.players[seatID].robot = rcvJson.robot
+                  this.players[seatID].reserve = rcvJson.reserve
+
+                  console.log("seatID:", seatID)
+                  console.log("players:", this.players)
 
                   let seatDID
                   seatDID = this.player.seatID
@@ -223,6 +245,8 @@ export default  {
                 }
               break
               case "ROOM":
+                  this.roomShare.type = rcvJson.type
+                  this.roomShare.rID = rcvJson.rID
                   this.roomShare.status = rcvJson.status
                   this.roomShare.gameRound = rcvJson.gameRound
                   this.roomShare.betRound = rcvJson.betRound
