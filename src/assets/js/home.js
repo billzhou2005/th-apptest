@@ -199,18 +199,18 @@ export default  {
                 this.player.cardsType = rcvJson.cardsType
                 this.player.reserve = rcvJson.reserve
 
-                this.roomPlayers[this.player.seatID].playerName = this.player.name
-                this.roomPlayers[this.player.seatID].balance = this.player.balance
-                this.roomPlayers[this.player.seatID].discard = this.player.discard
-                this.roomPlayers[this.player.seatID].cardsType = this.player.cardsType
-                this.roomPlayers[this.player.seatID].checkCard = this.player.checkCard
-                this.roomPlayers[this.player.seatID].focus = this.player.focus
+                this.roomPlayers[this.player.seatDID].playerName = this.player.name
+                this.roomPlayers[this.player.seatDID].balance = this.player.balance
+                this.roomPlayers[this.player.seatDID].discard = this.player.discard
+                this.roomPlayers[this.player.seatDID].cardsType = this.player.cardsType
+                this.roomPlayers[this.player.seatDID].checkCard = this.player.checkCard
+                this.roomPlayers[this.player.seatDID].focus = this.player.focus
                 console.log("roomPlayers", this.roomPlayers)
 
                 let j = 0
                 for (j=0; j<3; j++){
-                  this.roomPlayers[this.player.seatID].playerCards[j].points = this.player.cards[j].points
-                  this.roomPlayers[this.player.seatID].playerCards[j].suits = this.player.cards[j].suits
+                  this.roomPlayers[this.player.seatDID].playerCards[j].points = this.player.cards[j].points
+                  this.roomPlayers[this.player.seatDID].playerCards[j].suits = this.player.cards[j].suits
                 }
                 /*
                 // The room has 6 person in this test program
@@ -241,11 +241,20 @@ export default  {
                 this.roomShare.defendSeat = rcvJson.defendSeat
                 this.roomShare.reserve = rcvJson.reserve
                 console.log("roomShare", this.roomShare)
+                
+                let seatDID 
+                seatDID = this.roomShare.focusID
+                if(this.roomShare.focusID ==3) {
+                  seatDID = 5
+                }
+                if(this.roomShare.focusID ==5) {
+                  seatDID = 3
+                }
                 if(this.roomShare.focusID < 9) {
-                  this.roomPlayers[this.roomShare.focusID].focus = true
+                  this.roomPlayers[seatDID].focus = true
                   let i
                   for(i=0; i<9; i++) {
-                    if(i != this.roomShare.focusID) {
+                    if(i != seatDID) {
                       this.roomPlayers[i].focus = false
                     }
                   }
