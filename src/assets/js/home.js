@@ -41,7 +41,8 @@ export default  {
         betRound: 0,
         focusID: 0,
         compareID: 0,
-        baseVol: 0,
+        minVol: 0,
+        maxVol: 0,
         totalAmount: 0,
         lostSeat: 100,
         defendSeat: 0,
@@ -227,7 +228,8 @@ export default  {
                   this.roomShare.betRound = rcvJson.betRound
                   this.roomShare.focusID = rcvJson.focusID
                   this.roomShare.compareID = rcvJson.compareID
-                  this.roomShare.baseVol = rcvJson.baseVol
+                  this.roomShare.minVol = rcvJson.minVol
+                  this.roomShare.maxVol = rcvJson.maxVol
                   this.roomShare.totalAmount = rcvJson.totalAmount
                   this.roomShare.lostSeat = rcvJson.lostSeat
                   this.roomShare.defendSeat = rcvJson.defendSeat
