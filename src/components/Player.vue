@@ -58,7 +58,7 @@
           v-if="focus"
       > {{ counter }} </span> <br>
     </div>
-    <div v-show="checkCard" class="down-cards">
+    <div v-show="discard" class="down-cards">
       <Card
         v-for="card in playerCards"
         :key="card.index"
@@ -97,7 +97,7 @@ export default defineComponent({
       type: String,
       default: 0
     },
-    checkCard: {
+    discard: {
       type: Boolean,
       default: false
     },
