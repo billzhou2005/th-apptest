@@ -12,8 +12,8 @@
   <div class="main-right">
     <div class="row-players">
       <Player
-        v-for="player in roomPlayers.slice(0,3)"
-        :key="player.index"
+        v-for="player in players.slice(0,3)"
+        :key="player.seatDID"
         v-bind="player"
       />
     </div>
@@ -31,8 +31,8 @@
 
     <div class="row-players">
       <Player
-        v-for="player in roomPlayers.slice(3,6)"
-        :key="player.index"
+        v-for="player in players.slice(3,6)"
+        :key="player.seatDID"
         v-bind="player"
       />
     </div>
@@ -51,10 +51,6 @@
   </div>
 
   <div class="msg-btm" >
-    <label>Message in a WebSocket</label>
-    <p>
-      {{ rcvMessage }}
-    </p>
     <button @click="WebSocketClose">CloseWS</button>
     <button @click="testButton"> Test </button>
   </div>

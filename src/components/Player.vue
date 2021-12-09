@@ -49,7 +49,7 @@
 <template>
   <div :class="[focus? 'one-thirdFocus': 'one-third']">
     <div class="up-left">
-      <span> {{ playerName }}  </span> <br>
+      <span> {{ name }}  </span> <br>
       <span> {{ balance }}  </span> <br>
     </div>
     <div class="up-right">
@@ -58,34 +58,70 @@
           v-if="focus"
       > {{ counter }} </span> <br>
     </div>
-    <div v-show="discard" class="down-cards">
-      <Card
-        v-for="card in playerCards"
-        :key="card.index"
-        v-bind="card"
-      />
+    <div v-show="name != 'UNKNOWN'">
+      <div v-show="discard" class="down-cards">
+        <Card
+          v-for="card in cards"
+          :key="card.index"
+          v-bind="card"
+        />
+      </div>
+      <div v-show="!discard" class="down-cards">
+        <CardBack
+          v-for="card in cards"
+          :key="card.index"
+          v-bind="card"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, watch } from 'vue'
 import Card from '@/components/Card.vue'
+import CardBack from '@/components/CardBack.vue'
 
 export default defineComponent({
-  components: { Card },
+  components: { Card, CardBack },
   name: 'Player',
+  mounted() {
+    setInterval(() => {
+      if (this.counter > 0) {
+        this.counter--
+        if (this.counter == 0) {
+          this.counter = 6
+        }
+      }
+    }, 1000)
+  },
+  setup(props){
+      watch(
+         ()=>props.focus,
+         (valNew,valOld)=>{
+            console.log(valNew)
+            console.log(valOld)
+            // this.counter = 6
+          },
+           { deep: true, immediate: true }
+       )
+    },
+  data() {
+    return {
+      counter:6,
+    }
+  },
   methods: {
     sendMessage(bvol) {
       bvol = 0
-    }
+    },
   },
   props: {
-    index: {
+    seatDID: {
       type: Number,
       required: true
     },
-    playerName: {
+    name: {
       type: String,
       default: 'UNKNOWN'
     },
@@ -101,15 +137,15 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    counter: {
-      type: Number,
-      default: 0
+    checkCard: {
+      type: Boolean,
+      default: false
     },
     focus: {
       type: Boolean,
       default: false
     },
-    playerCards: {
+    cards: {
       type: Array,
       default: [
         { index: 0, points: 1, suits: 1 },

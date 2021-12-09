@@ -5,17 +5,6 @@ export default  {
   name: 'Home',
   data() {
     return {
-        roomPlayers: [
-            { index: 0, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },] },
-            { index: 1, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 2, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 3, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 4, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 5, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 6, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 7, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-            { index: 8, BEO: 0, playerName: "UNKNOWN", balance: 0, discard: true, cardsType: "TBD", checkCard: false, counter: 0, focus: false, playerCards: [ { index: 0, points: 1, suits: 1 }, { index: 1, points: 2, suits: 1 }, { index: 2, points: 3, suits: 1 },] },
-        ],
         player: {
         type: "PLAYER",
         rID: 0,
@@ -32,18 +21,20 @@ export default  {
         balance: 0,
         allin: false,
         robot: false,
+        cardsType:"UNKNOWN",
+        cards:[ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },],
         reserve: "TBD",
       },
       players: [
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 100, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD",},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 0, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 1, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 2, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 3, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 4, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 5, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 6, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 7, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 8, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
       ],
       roomShare: {
         type: "ROOM",
@@ -101,13 +92,6 @@ export default  {
     this.socket.onmessage = (evt) => {
         this.acceptMsg(evt)
     }
-
-    setInterval(() => {
-      if (this.counter > 0) {
-        this.counter--
-
-      }
-    }, 1000)
   },
   methods: {
     bAdd1() {
@@ -160,11 +144,7 @@ export default  {
       try {
         rcvJson = JSON.parse(evt.data)
         if(rcvJson.rID == parseInt(localStorage.getItem("RoomID"))) {
-
-            // currentSeatID is bottom-middle, it is from back-end
             let currentSeatID = 0
-
-            // display point = 0(top-left) match to ->back-end seatID
             let startPoint = 0
 
             startPoint = currentSeatID + 2
@@ -179,38 +159,11 @@ export default  {
                   this.player = rcvJson
 
                   let seatID = rcvJson.seatID
+                  if(this.player.seatID == 3) {seatID = 5}
+                  if(this.player.seatID == 5) {seatID = 3}
                   this.players[seatID] = rcvJson
                   console.log("seatID:", seatID)
                   console.log("players:", this.players)
-
-                  let seatDID
-                  seatDID = this.player.seatID
-                  if(this.player.seatID == 3) {seatDID = 5}
-                  if(this.player.seatID == 5) {seatDID = 3}
-
-                  this.roomPlayers[seatDID].playerName = this.player.name
-                  this.roomPlayers[seatDID].balance = this.player.balance
-                  this.roomPlayers[seatDID].discard = this.player.discard
-                  this.roomPlayers[seatDID].checkCard = this.player.checkCard
-                  this.roomPlayers[seatDID].focus = this.player.focus
-                  //console.log("roomPlayers", this.roomPlayers)
-                  /*
-                  // The room has 6 person in this test program
-                  let j =0
-                  let BEO =0
-                  for(i=0;i<6;i++) {
-                  BEO = this.roomPlayers[i].BEO
-                  this.roomPlayers[i].cardType = this.cards.cardsTypes[BEO]
-                  for(j=0;j<3;j++) {
-                      this.roomPlayers[i].playerCards[j].points = this.cards.cardsPoints[3*BEO+j]
-                      this.roomPlayers[i].playerCards[j].suits = this.cards.cardsSuits[3*BEO+j]
-                  }
-
-                  // init cardCheck
-                  if(this.roomPlayers[i].playerName == localStorage.getItem("LoginUser")) {
-                      this.cardCheck = true
-                  }
-                  } */
                 }
               break
               case "ROOM":
@@ -226,11 +179,11 @@ export default  {
                     seatDID = 3
                   }
                   if(this.roomShare.focusID < 6) {
-                    this.roomPlayers[seatDID].focus = true
+                    this.players[seatDID].focus = true
                     let i
                     for(i=0; i<6; i++) {
                       if(i != seatDID) {
-                        this.roomPlayers[i].focus = false
+                        this.players[i].focus = false
                       }
                     }
                   }
@@ -241,17 +194,17 @@ export default  {
                 this.roomShare.totalAmount = rcvJson.totalAmount
                 for(i=0; i<6; i++) {
                   if(i == 3) {
-                    this.roomPlayers[i].playerName = rcvJson.players[5]
-                    this.roomPlayers[i].balance = rcvJson.balances[5]
-                    this.roomPlayers[i].discard = rcvJson.discards[5]
+                    this.players[i].name = rcvJson.players[5]
+                    this.players[i].balance = rcvJson.balances[5]
+                    this.players[i].discard = rcvJson.discards[5]
                   }else if(i == 5) {
-                    this.roomPlayers[i].playerName = rcvJson.players[3]
-                    this.roomPlayers[i].balance = rcvJson.balances[3]
-                    this.roomPlayers[i].discard = rcvJson.discards[3]
+                    this.players[i].name = rcvJson.players[3]
+                    this.players[i].balance = rcvJson.balances[3]
+                    this.players[i].discard = rcvJson.discards[3]
                   }else{
-                    this.roomPlayers[i].playerName = rcvJson.players[i]
-                    this.roomPlayers[i].balance = rcvJson.balances[i]
-                    this.roomPlayers[i].discard = rcvJson.discards[i]
+                    this.players[i].name = rcvJson.players[i]
+                    this.players[i].balance = rcvJson.balances[i]
+                    this.players[i].discard = rcvJson.discards[i]
                   }
                 }
               break
@@ -264,12 +217,11 @@ export default  {
                   if(i == 3) {seatDID =5}
                   if(i == 5) {seatDID =3}
                   for (j=0;j<3;j++) {
-                    this.roomPlayers[i].playerCards[j].points = rcvJson.points[3*seatDID + j]
-                    this.roomPlayers[i].playerCards[j].suits = rcvJson.suits[3*seatDID + j]
-                    this.roomPlayers[i].cardsType = rcvJson.cardsTypes[seatDID]
+                    this.players[i].cards[j].points = rcvJson.points[3*seatDID + j]
+                    this.players[i].cards[j].suits = rcvJson.suits[3*seatDID + j]
+                    this.players[i].cardsType = rcvJson.cardsTypes[seatDID]
                   }
                 }
-                console.log("roomPlayers",this.roomPlayers)
               break
               default:
                 console.log("Data Ignored:", rcvJson)
