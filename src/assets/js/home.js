@@ -176,41 +176,10 @@ export default  {
               case "PLAYER":
                 if(rcvJson.msgType !="INITROOM") {
                   console.log("PLAYER:", rcvJson)
-                  this.player.type = rcvJson.type
-                  this.player.rID = rcvJson.rID
-                  this.player.pID = rcvJson.pID
-                  this.player.msgType = rcvJson.msgType
-                  this.player.name = rcvJson.name
-                  this.player.seatID = rcvJson.seatID
-                  this.player.seatDID = rcvJson.seatDID
-                  this.player.betRound= rcvJson.betRound
-                  this.player.focus = rcvJson.focus
-                  this.player.checkCard = rcvJson.checkCard
-                  this.player.discard = rcvJson.discard
-                  this.player.betVol = rcvJson.betVol
-                  this.player.balance = rcvJson.balance
-                  this.player.allin = rcvJson.allin
-                  this.player.robot = rcvJson.robot
-                  this.player.reserve = rcvJson.reserve
+                  this.player = rcvJson
 
                   let seatID = rcvJson.seatID
-                  this.players[seatID].type = rcvJson.type
-                  this.players[seatID].rID = rcvJson.rID
-                  this.players[seatID].pID = rcvJson.pID
-                  this.players[seatID].msgType = rcvJson.msgType
-                  this.players[seatID].name = rcvJson.name
-                  this.players[seatID].seatID = rcvJson.seatID
-                  this.players[seatID].seatDID = rcvJson.seatDID
-                  this.players[seatID].betRound= rcvJson.betRound
-                  this.players[seatID].focus = rcvJson.focus
-                  this.players[seatID].checkCard = rcvJson.checkCard
-                  this.players[seatID].discard = rcvJson.discard
-                  this.players[seatID].betVol = rcvJson.betVol
-                  this.players[seatID].balance = rcvJson.balance
-                  this.players[seatID].allin = rcvJson.allin
-                  this.players[seatID].robot = rcvJson.robot
-                  this.players[seatID].reserve = rcvJson.reserve
-
+                  this.players[seatID] = rcvJson
                   console.log("seatID:", seatID)
                   console.log("players:", this.players)
 
@@ -245,19 +214,7 @@ export default  {
                 }
               break
               case "ROOM":
-                  this.roomShare.type = rcvJson.type
-                  this.roomShare.rID = rcvJson.rID
-                  this.roomShare.status = rcvJson.status
-                  this.roomShare.gameRound = rcvJson.gameRound
-                  this.roomShare.betRound = rcvJson.betRound
-                  this.roomShare.focusID = rcvJson.focusID
-                  this.roomShare.compareID = rcvJson.compareID
-                  this.roomShare.minVol = rcvJson.minVol
-                  this.roomShare.maxVol = rcvJson.maxVol
-                  this.roomShare.totalAmount = rcvJson.totalAmount
-                  this.roomShare.lostSeat = rcvJson.lostSeat
-                  this.roomShare.defendSeat = rcvJson.defendSeat
-                  this.roomShare.reserve = rcvJson.reserve
+                  this.roomShare = rcvJson
                   console.log("roomShare", this.roomShare)
 
                   let seatDID
