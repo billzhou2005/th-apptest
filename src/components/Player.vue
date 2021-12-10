@@ -59,7 +59,7 @@
       > {{ counter }} </span> <br>
     </div>
     <div v-show="hasCard" class="down-cards">
-      <div v-if="discard" >
+      <div v-if="showCard" >
         <Card
           v-for="card in cards"
           :key="card.index"
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import { defineComponent, watch } from 'vue'
+import { defineComponent, watch, reactive } from 'vue'
 import Card from '@/components/Card.vue'
 import CardBack from '@/components/CardBack.vue'
 
@@ -95,17 +95,19 @@ export default defineComponent({
       }
     }, 1000)
   },
-  data() {
+
+  data () {
     return {
-      counter:6,
+      counter: 6,
     }
   },
-  methods: {
-    sendMessage(bvol) {
-      bvol = 0
-    },
-  },
+
+
   props: {
+    showCard: {
+      type: Boolean,
+      default: false
+    },
     seatDID: {
       type: Number,
       required: true

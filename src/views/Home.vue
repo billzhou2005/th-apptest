@@ -3,10 +3,8 @@
 <div class="main">
   <div class="main-left">
     <div class="usercontrol">
-      <button class="secondaryButton" @click="joinMessage()">Join</button>
+      <button class="primaryButton" @click="joinMessage()">Join</button>
       <button class="fourthButton"  @click="leaveMessage()">Leave</button>
-      <button class="thirdButton"  @click="newRoundTest()">NewRound</button>
-      <button class="primaryButton"  @click="roomTestFunc()">Room Test</button>
     </div>
   </div>
   <div class="main-right">
@@ -42,15 +40,14 @@
     </div>
 
     <div class="bcontrol">
-      <button class="circleBtn1" @click="bAdd1()"><span >壹万</span> </button>
-      <button class="circleBtn2" @click="bAdd2()"><span >贰万</span> </button>
-      <button class="circleBtn3" @click="bAdd3()"><span >伍万</span> </button>
+      <button class="circleBtn2" @click="bClearFunc()"><span >最小</span> </button>
+      <button class="circleBtn3" @click="bAdd1()"><span >加注</span> </button>
       <button class="circleBtn4" @click="bAdd4()"><span >最大</span> </button>
       <input class="bVolInput" type="text" :value="currBvol" />
-      <button class="thirdButton" @click="bClearFunc()">复位</button>
       <button class="primaryButton" :disabled="!bControl" @click="bConfirm()">投注</button>
       <button :class="bFollowClass" @click="bFollowFunc()">跟</button>
       <button :class="bFollowAnyClass" @click="bFollowAnyFunc()">跟任意</button>
+      <button :class="bDiscardClass" @click="bDiscardFunc()">弃牌</button>
     </div>
   </div>
 
@@ -156,39 +153,39 @@ export default  {
   float:right;
 }
 .primaryButton {
-  width: 80px;
+  width: 60px;
   height: 40px;
   background: green;
   border: none;
   color: white;
-  margin: 6px 10px;
+  margin: 6px 3px;
   border-radius: 6px;
 }
 .secondaryButton {
-  width: 80px;
+  width: 60px;
   height: 40px;
   background: rgb(0, 45, 128);
   border: none;
   color: white;
-  margin: 6px 10px;
+  margin: 6px 3px;
   border-radius: 6px;
 }
 .thirdButton {
-  width: 80px;
+  width: 60px;
   height: 40px;
   background: rgb(124, 0, 128);
   border: none;
   color: white;
-  margin: 6px 10px;
+  margin: 6px 3px;
   border-radius: 6px;
 }
 .fourthButton {
-  width: 80px;
+  width: 60px;
   height: 40px;
   background: rgb(89, 92, 89);
   border: none;
   color: white;
-  margin: 6px 10px;
+  margin: 6px 3px;
   border-radius: 6px;
 }
 .circleBtn1 {
@@ -234,8 +231,9 @@ export default  {
     border: 1px solid #d5d5d5;
 }
 .bVolInput {
-    margin-left:10px;
+    margin:6px;
     text-align:center;
+    font-size: 1.2em;
     width:80px;
     height:40px;
     border: 3px solid #000000;
