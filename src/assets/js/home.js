@@ -75,6 +75,8 @@ export default  {
       bFollowClass: "fourthButton",
       bFollowAnyClass: "fourthButton",
       bDiscardClass: "fourthButton",
+      bCounter: 0,
+      bTimeout: false,
       currBvol:0,
       counter: 0,
       countIndex: 0,
@@ -103,6 +105,29 @@ export default  {
     this.socket.onmessage = (evt) => {
         this.acceptMsg(evt)
     }
+    setInterval(() => {
+      if (this.bCounter > 0) {
+        this.bCounter--
+        console.log("Login User operation:", this.bCounter, this.bTimeout)
+        if (this.bCounter == 0) {
+          this.bTimeout = true
+          if(this.bFollow) {
+            this.player.name = localStorage.getItem("LoginUser")
+            this.player.msgType = "FOLLOW"
+            this.player.betVol = this.roomShare.minVol
+            this.socket.send(JSON.stringify(this.player))
+            console.log(this.player.name,this.player.msgType)
+          }
+          if (this.bDiscard) {
+            this.player.name = localStorage.getItem("LoginUser")
+            this.player.msgType = "DISCARD"
+            this.player.betVol = 0
+            this.socket.send(JSON.stringify(this.player))
+            console.log(this.player.name,this.player.msgType)
+          }
+        }
+      }
+    }, 1000)
   },
   methods: {
     bRest() {
@@ -134,7 +159,7 @@ export default  {
     },
     bConfirm() {
       this.player.betVol = this.currBvol
-      this.player.msgType = "BETTING"
+      this.player.msgType = "BETTED"
       console.log(this.currBvol)
       this.socket.send(JSON.stringify(this.player))
     },
@@ -209,17 +234,6 @@ export default  {
       this.socket.send(JSON.stringify(this.roomShare))
     },
 
-    sendMessage(bvol) {
-    //  this.socket.send(JSON.stringify(msg))
-
-      // this.getCountFocus(player.seatID)
-      // this.counter = 15
-      bvol = 0
-    },
-    sortSeatID(a, b) {
-      return a.seatID - b.seatID
-    },
-
     acceptMsg(evt) {
       let rcvJson
       this.rcvMessage = evt.data
@@ -249,8 +263,10 @@ export default  {
                     this.players[seatID] = rcvJson
 
                     console.log("Player:", this.player)
-                    if (this.player.name == localStorage.getItem("LoginUser") && this.player.focus == true) {
+                    if (this.player.msgType == "BETTING" && this.player.name == localStorage.getItem("LoginUser") && this.player.focus == true) {
                       this.bControl = true
+                      this.bCounter = 6
+                      this.bTimeout = false
                     }
                     else {
                       this.bControl = false
@@ -351,7 +367,7 @@ export default  {
     joinMessage() {
       this.player.rID = 0
       this.player.msgType = "JOIN"
-      this.player.discard = true
+      this.player.robot = false
       this.player.name = localStorage.getItem("LoginUser")
       this.player.balance = parseInt(localStorage.getItem("Balance"))
       this.socket.send(JSON.stringify(this.player))

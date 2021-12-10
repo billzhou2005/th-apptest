@@ -46,7 +46,6 @@
       <input class="bVolInput" type="text" :value="currBvol" />
       <button class="primaryButton" :disabled="!bControl" @click="bConfirm()">投注</button>
       <button :class="bFollowClass" @click="bFollowFunc()">跟</button>
-      <button :class="bFollowAnyClass" @click="bFollowAnyFunc()">跟任意</button>
       <button :class="bDiscardClass" @click="bDiscardFunc()">弃牌</button>
     </div>
   </div>
