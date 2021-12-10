@@ -58,15 +58,15 @@
           v-if="focus"
       > {{ counter }} </span> <br>
     </div>
-    <div v-show="name != 'UNKNOWN'">
-      <div v-show="discard" class="down-cards">
+    <div v-show="hasCard" class="down-cards">
+      <div v-if="discard" >
         <Card
           v-for="card in cards"
           :key="card.index"
           v-bind="card"
         />
       </div>
-      <div v-show="!discard" class="down-cards">
+      <div v-else >
         <CardBack
           v-for="card in cards"
           :key="card.index"
@@ -95,17 +95,6 @@ export default defineComponent({
       }
     }, 1000)
   },
-  setup(props){
-      watch(
-         ()=>props.focus,
-         (valNew,valOld)=>{
-            console.log(valNew)
-            console.log(valOld)
-            // this.counter = 6
-          },
-           { deep: true, immediate: true }
-       )
-    },
   data() {
     return {
       counter:6,
@@ -137,7 +126,7 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    checkCard: {
+    hasCard: {
       type: Boolean,
       default: false
     },

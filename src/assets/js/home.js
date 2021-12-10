@@ -1,7 +1,8 @@
 import Player from "@/components/Player.vue"
+import Card from '@/components/Card.vue'
 
 export default  {
-  components: { Player },
+  components: { Player, Card },
   name: 'Home',
   data() {
     return {
@@ -15,7 +16,7 @@ export default  {
         seatDID: 100,
         betRound: 0,
         focus: false,
-        checkCard: false,
+        hasCard: false,
         discard: true,
         betVol: 0,
         balance: 0,
@@ -26,15 +27,15 @@ export default  {
         reserve: "TBD",
       },
       players: [
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 0, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 1, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 2, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 3, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 4, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 5, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 6, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 7, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
-        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 8, betRound: 0, focus: false, checkCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 0, betRound: 0, focus: false, hasCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 1, betRound: 0, focus: false, hasCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 2, betRound: 0, focus: false, hasCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 3, betRound: 0, focus: false, hasCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 4, betRound: 0, focus: false, hasCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 5, betRound: 0, focus: false, hasCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 6, betRound: 0, focus: false, hasCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 7, betRound: 0, focus: false, hasCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
+        { type: "PLAYER", rID: 0, pID: "e968cccc", msgType: "JOIN", name: "UNKNOWN", seatID: 100, seatDID: 8, betRound: 0, focus: false, hasCard: false, discard: true, betVol: 0, balance: 0, allin: false, robot: false, reserve: "TBD", cardsType:"UNKNOWN", cards: [ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },]},
       ],
       roomShare: {
         type: "ROOM",
@@ -54,8 +55,10 @@ export default  {
       bCtlVol: [
         { ctrVol1:100, ctrVol2:200, ctrVol3:500, ctrVol4:1000, ctrVol5:2000, ctrVol6:5000},
         { ctrVol1:1000, ctrVol2:2000, ctrVol3:5000, ctrVol4:10000, ctrVol5:20000, ctrVol6:50000},
-        { ctrVol1:10000, ctrVol2:20000, ctrVol3:50000, ctrVol4:100000, ctrVol5:200000, ctrVol6:500000},
+        { ctrVol1:10000, ctrVol2:20000, ctrVol3:50000, ctrVol4:200000, ctrVol5:500000, ctrVol6:1000000},
       ],
+      discardsDisp:[ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },],
+      discardsShow: false,
       socket: null,
       rcvMessage: "",
       cardCheck: false,
@@ -64,6 +67,11 @@ export default  {
       selectedSeatID: 0,
       userStatus: "",
       betvolTotal: 0,
+      bControl:false,
+      bFollow: false,
+      bFollowAny: false,
+      bFollowClass: "fourthButton",
+      bFollowAnyClass: "fourthButton",
       currBvol:0,
       counter: 0,
       countIndex: 0,
@@ -72,7 +80,7 @@ export default  {
   },
   mounted() {
     localStorage.setItem("LoginUser","dev21666")
-    localStorage.setItem("Balance","320000")
+    localStorage.setItem("Balance","2000000")
     localStorage.setItem("RoomID","0")
 
     this.socket = new WebSocket("ws://140.143.149.188:9080/ws")
@@ -94,28 +102,71 @@ export default  {
     }
   },
   methods: {
+    bRest() {
+      this.currBvol = this.roomShare.minVol
+    },
     bAdd1() {
-      this.currBvol += this.bCtlVol[1].ctrVol1
-      console.log(this.currBvol)
+      this.currBvol += this.bCtlVol[2].ctrVol1
+      if (this.currBvol > this.roomShare.maxVol) {
+        this.currBvol = this.roomShare.maxVol
+      }
     },
     bAdd2() {
-      this.currBvol += this.bCtlVol[1].ctrVol2
+      this.currBvol += this.bCtlVol[2].ctrVol2
+      if (this.currBvol > this.roomShare.maxVol) {
+        this.currBvol = this.roomShare.maxVol
+      }
     },
     bAdd3() {
-      this.currBvol += this.bCtlVol[1].ctrVol3
+      this.currBvol += this.bCtlVol[2].ctrVol3
+      if (this.currBvol > this.roomShare.maxVol) {
+        this.currBvol = this.roomShare.maxVol
+      }
     },
     bAdd4() {
-      this.currBvol += this.bCtlVol[1].ctrVol4
+      this.currBvol += this.bCtlVol[2].ctrVol4
+      if (this.currBvol > this.roomShare.maxVol) {
+        this.currBvol = this.roomShare.maxVol
+      }
     },
     bAdd5() {
-      this.currBvol += this.bCtlVol[1].ctrVol5
+      this.currBvol += this.bCtlVol[2].ctrVol5
+      if (this.currBvol > this.roomShare.maxVol) {
+        this.currBvol = this.roomShare.maxVol
+      }
     },
     bAdd6() {
-      this.currBvol += this.bCtlVol[1].ctrVol6
+      this.currBvol += this.bCtlVol[2].ctrVol6
+      if (this.currBvol > this.roomShare.maxVol) {
+        this.currBvol = this.roomShare.maxVol
+      }
+    },
+    bClearFunc(){
+      this.currBvol = this.roomShare.minVol
     },
     bConfirm() {
-      this.currBvol = 0
       console.log(this.currBvol)
+    },
+    bFollowFunc(){
+      this.bFollow = !this.bFollow
+      if (this.bFollow) {
+        this.bFollowAny = false
+        this.bFollowClass = "primaryButton"
+        this.bFollowAnyClass = "fourthButton"
+      }
+      else {
+        this.bFollowClass = "fourthButton"
+      }
+    },
+    bFollowAnyFunc(){
+      this.bFollowAny = !this.bFollowAny
+      if (this.bFollowAny) {
+        this.bFollow = false
+        this.bFollowClass = "fourthButton"
+        this.bFollowAnyClass = "primaryButton"
+      } else {
+        this.bFollowAnyClass = "fourthButton"
+      }
     },
     bCheckOwnCards() {
       this.roomShare.tID = parseInt(localStorage.getItem("RoomID"))
@@ -154,21 +205,37 @@ export default  {
             // console.log(rcvJson.type,rcvJson)
             switch (rcvJson.type) {
               case "PLAYER":
-                if(rcvJson.msgType !="INITROOM") {
-                  console.log("PLAYER:", rcvJson)
-                  this.player = rcvJson
+                switch (rcvJson.msgType) {
+                  case "INITROOM":
+                  case "JOIN":
+                    console.log("Self Msg:", rcvJson)
+                    break
+                  default:
+                    this.player = rcvJson
+                    let seatID = rcvJson.seatID
+                    if(this.player.seatID == 3) {seatID = 5}
+                    if(this.player.seatID == 5) {seatID = 3}
+                    this.players[seatID] = rcvJson
 
-                  let seatID = rcvJson.seatID
-                  if(this.player.seatID == 3) {seatID = 5}
-                  if(this.player.seatID == 5) {seatID = 3}
-                  this.players[seatID] = rcvJson
-                  console.log("seatID:", seatID)
-                  console.log("players:", this.players)
-                }
+                    console.log("Player:", this.player)
+                    if (this.player.name == localStorage.getItem("LoginUser") && this.player.focus == true) {
+                      this.bControl = true
+                    }
+                    else {
+                      this.bControl = false
+                    }
+                    if(this.player.discard == true) {
+                      this.discardsDisp = this.player.cards
+                      this.discardsShow = true
+                    } else {
+                      this.discardsShow = false
+                    }
+                  }
               break
               case "ROOM":
                   this.roomShare = rcvJson
                   console.log("roomShare", this.roomShare)
+                  this.currBvol = rcvJson.minVol
 
                   let seatDID
                   seatDID = this.roomShare.focusID
@@ -196,14 +263,17 @@ export default  {
                   if(i == 3) {
                     this.players[i].name = rcvJson.players[5]
                     this.players[i].balance = rcvJson.balances[5]
+                    this.players[i].hasCard = rcvJson.hasCards[5]
                     this.players[i].discard = rcvJson.discards[5]
                   }else if(i == 5) {
                     this.players[i].name = rcvJson.players[3]
                     this.players[i].balance = rcvJson.balances[3]
+                    this.players[i].hasCard = rcvJson.hasCards[3]
                     this.players[i].discard = rcvJson.discards[3]
                   }else{
                     this.players[i].name = rcvJson.players[i]
                     this.players[i].balance = rcvJson.balances[i]
+                    this.players[i].hasCard = rcvJson.hasCards[i]
                     this.players[i].discard = rcvJson.discards[i]
                   }
                 }

@@ -24,9 +24,13 @@
         </div>
     </div>
     <div class="row-middle">
-        <div class="item">
-          <span class="currBvolLable">{{ currBvol }}  </span>
-        </div>
+      <div class="discards" v-if="discardsShow">
+        <Card
+          v-for="card in discardsDisp"
+          :key="card.index"
+          v-bind="card"
+        />
+      </div>
     </div>
 
     <div class="row-players">
@@ -38,21 +42,19 @@
     </div>
 
     <div class="bcontrol">
-      <button class="circleBtn1" @click="bAdd1()"><span >壹千</span> </button>
-      <button class="circleBtn2" @click="bAdd2()"><span >贰千</span> </button>
-      <button class="circleBtn3" @click="bAdd3()"><span >伍千</span> </button>
-      <button class="circleBtn4" @click="bAdd4()"><span >壹万</span> </button>
-      <button class="circleBtn5" @click="bAdd5()"><span >贰万</span> </button>
-      <button class="circleBtn6" @click="bAdd6()"><span >伍万</span> </button>
-
-      <button class="primaryButton" @click="bConfirm()">确定</button>
-      <button v-show="cardCheck" class="secondaryButton" @click="bCheckOwnCards()">看牌</button>
+      <button class="circleBtn1" @click="bAdd1()"><span >壹万</span> </button>
+      <button class="circleBtn2" @click="bAdd2()"><span >贰万</span> </button>
+      <button class="circleBtn3" @click="bAdd3()"><span >伍万</span> </button>
+      <button class="circleBtn4" @click="bAdd4()"><span >最大</span> </button>
+      <input class="bVolInput" type="text" :value="currBvol" />
+      <button class="thirdButton" @click="bClearFunc()">复位</button>
+      <button class="primaryButton" :disabled="!bControl" @click="bConfirm()">投注</button>
+      <button :class="bFollowClass" @click="bFollowFunc()">跟</button>
+      <button :class="bFollowAnyClass" @click="bFollowAnyFunc()">跟任意</button>
     </div>
   </div>
 
   <div class="msg-btm" >
-    <button @click="WebSocketClose">CloseWS</button>
-    <button @click="testButton"> Test </button>
   </div>
 </div>
 </template>
@@ -119,6 +121,21 @@ export default  {
     font-size: 2.6em;
   }
 
+}
+.middle-left {
+  margin: 0px 0px;
+  width:40%;
+  background:rgb(220, 220, 220);
+  float: left;
+  display: flex;
+  justify-content: center;
+}
+.middle-right {
+  margin: 0px 0px;
+  width:60%;
+  background:rgb(220, 220, 220);
+  float: left;
+  justify-content: center;
 }
 
 
@@ -215,5 +232,17 @@ export default  {
     border-radius:50%;
     background-color: rgb(251, 255, 0);
     border: 1px solid #d5d5d5;
+}
+.bVolInput {
+    margin-left:10px;
+    text-align:center;
+    width:80px;
+    height:40px;
+    border: 3px solid #000000;
+}
+
+button[disabled] {
+  color: white !important;
+  background: #666464 !important;
 }
 </style>
