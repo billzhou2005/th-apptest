@@ -61,7 +61,6 @@ export default  {
       discardsDisp:[ { index: 0, points: 0, suits: 0 }, { index: 1, points: 0, suits: 1 }, { index: 2, points: 0, suits: 2 },],
       discardsShow: false,
       socket: null,
-      rcvMessage: "",
       cardCheck: false,
       tableID: 0,
       userID: "c63p432n1fdk5k0aeta1",
@@ -236,46 +235,38 @@ export default  {
 
     acceptMsg(evt) {
       let rcvJson
-      this.rcvMessage = evt.data
       try {
         rcvJson = JSON.parse(evt.data)
         if(rcvJson.rID == parseInt(localStorage.getItem("RoomID"))) {
+            /*
             let currentSeatID = 0
             let startPoint = 0
 
             startPoint = currentSeatID + 2
             if(startPoint > 5) {
                 startPoint = startPoint - 6
-            }
+            } */
+            let jsonType = rcvJson.type
             // console.log(rcvJson.type,rcvJson)
-            switch (rcvJson.type) {
+            switch (jsonType) {
               case "PLAYER":
-                switch (rcvJson.msgType) {
+                let msgType = rcvJson.msgType
+                switch (msgType) {
                   case "INITROOM":
                   case "JOIN":
                     console.log("Self Msg:", rcvJson)
                     break
                   default:
-                    this.player = rcvJson
-                    let seatID = rcvJson.seatID
-                    if(this.player.seatID == 3) {seatID = 5}
-                    if(this.player.seatID == 5) {seatID = 3}
+                    let playMsg = rcvJson
+                    console.log("playMsg:", playMsg)
+                    
+                    let seatID = playMsg.seatID
+                    if(playMsg.seatID == 3) {seatID = 5}
+                    if(playMsg.seatID == 5) {seatID = 3}
                     this.players[seatID] = rcvJson
 
-                    console.log("Player:", this.player)
-                    if (this.player.msgType == "BETTING" && this.player.name == localStorage.getItem("LoginUser") && this.player.focus == true) {
-                      this.bControl = true
-                      this.bCounter = 6
-                      this.bTimeout = false
-                    }
-                    else {
-                      this.bControl = false
-                    }
-                    if (this.player.name == localStorage.getItem("LoginUser")) {
-                      this.players[seatID].showCard = true
-                    }
-                    if(this.player.discard == true) {
-                      this.discardsDisp = this.player.cards
+                    if(playMsg.discard == true) {
+                      this.discardsDisp = playMsg.cards
                       this.discardsShow = true
                     } else {
                       this.discardsShow = false
@@ -284,6 +275,18 @@ export default  {
               break
               case "ROOM":
                   this.roomShare = rcvJson
+                  let focusID = this.roomShare.focusID
+                  if(focusID < 9) {
+                    if (this.players[focusID].name == localStorage.getItem("LoginUser")) {
+                      this.bControl = true
+                      this.bCounter = 6
+                      this.bTimeout = false
+                    }
+                    else {
+                      this.bControl = false
+                    }
+                  }
+  
                   console.log("roomShare", this.roomShare)
                   this.currBvol = rcvJson.minVol
 
@@ -329,6 +332,7 @@ export default  {
 
                   if(this.players[i].name == localStorage.getItem("LoginUser")) {
                     this.players[i].showCard = true
+                    this.player = this.players[i]
                   }else {
                     this.players[i].showCard = false
                   }
