@@ -44,8 +44,9 @@
       <button class="circleBtn3" @click="bAdd1()"><span >加注</span> </button>
       <button class="circleBtn4" @click="bAdd4()"><span >最大</span> </button>
       <input class="bVolInput" type="text" :value="currBvol" />
-      <button class="primaryButton" :disabled="!bControl" @click="bConfirm()">投注</button>
+      <button class="secondaryButton" :disabled="!bControl" @click="bConfirm()">投注</button>
       <button :class="bFollowClass" @click="bFollowFunc()">跟</button>
+      <button :class="bCompareClass" @click="bCompareFunc()">比上家</button>
       <button :class="bDiscardClass" @click="bDiscardFunc()">弃牌</button>
     </div>
   </div>

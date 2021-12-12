@@ -90,7 +90,7 @@ export default defineComponent({
       if (this.counter > 0) {
         this.counter--
         if (this.counter == 0) {
-          this.counter = 6
+          this.counter = 10
         }
       }
     }, 1000)

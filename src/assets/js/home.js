@@ -69,11 +69,13 @@ export default  {
       betvolTotal: 0,
       bControl:false,
       bFollow: false,
+      bCompare: false,
       bFollowAny: false,
       bDiscard: false,
       bFollowClass: "fourthButton",
       bFollowAnyClass: "fourthButton",
       bDiscardClass: "fourthButton",
+      bCompareClass: "fourthButton",
       bCounter: 0,
       bTimeout: false,
       currBvol:0,
@@ -107,31 +109,56 @@ export default  {
     setInterval(() => {
       if (this.bCounter > 0) {
         this.bCounter--
-        console.log("Login User operation:", this.bCounter, this.bTimeout)
         if (this.bCounter == 0) {
           this.bTimeout = true
-          if(this.bFollow) {
-            this.player.name = localStorage.getItem("LoginUser")
-            this.player.msgType = "FOLLOW"
-            this.player.betVol = this.roomShare.minVol
+          this.player.msgType = "TIMEOUT"
+          this.player.betVol = 0
+          if(this.player.name != "UNKNOWN" && this.player.seatDID != 100) {
             this.socket.send(JSON.stringify(this.player))
-            console.log(this.player.name,this.player.msgType)
+          }
+        }
+        console.log("Login User operation:", this.bCounter, this.bTimeout)
+        if(!this.bTimeout && this.player.name != "UNKNOWN" && this.player.seatID != 100) {
+          if(this.bFollow) {
+            this.player.msgType = "FOLLOW"
+            if(this.player.balance > this.roomShare.minVol) {
+              this.player.betVol = this.roomShare.minVol
+              this.player.allin = false
+            } else {
+              this.player.betVol = this.player.balance
+              this.player.allin = true
+            }
+            this.bFollowFunc()
+            this.socket.send(JSON.stringify(this.player))
+            this.bCounter = 0
+          }
+          if (this.bCompare) {
+            this.player.msgType = "COMPARING"
+            if(this.player.balance > this.roomShare.minVol) {
+              this.player.betVol = this.roomShare.minVol
+              this.player.allin = false
+            } else {
+              this.player.betVol = this.player.balance
+              this.player.allin = true
+            }
+            this.bCompareFunc()
+            this.socket.send(JSON.stringify(this.player))
+            this.bCounter = 0
           }
           if (this.bDiscard) {
-            this.player.name = localStorage.getItem("LoginUser")
             this.player.msgType = "DISCARD"
             this.player.betVol = 0
+            this.bDiscardFunc()
             this.socket.send(JSON.stringify(this.player))
-            console.log(this.player.name,this.player.msgType)
+            this.bCounter = 0
           }
+        } else {
+          console.log(this.bTimeout, this.player.name, this.player.seatID)
         }
       }
     }, 1000)
   },
   methods: {
-    bRest() {
-      this.currBvol = this.roomShare.minVol
-    },
     bAdd1() {
       this.currBvol += this.bCtlVol[2].ctrVol1
       if (this.currBvol > this.roomShare.maxVol) {
@@ -157,34 +184,35 @@ export default  {
       this.currBvol = this.roomShare.minVol
     },
     bConfirm() {
+      this.bCounter = 0
       this.player.betVol = this.currBvol
-      this.player.msgType = "BETTED"
-      console.log(this.currBvol)
+      this.player.msgType = "BCONFIRM"
+      console.log(this.player.name, this.player.msgType)
       this.socket.send(JSON.stringify(this.player))
     },
     bFollowFunc(){
       this.bFollow = !this.bFollow
       if (this.bFollow) {
         this.bFollowClass = "primaryButton"
-        this.bFollowAny = false
-        this.bFollowAnyClass = "fourthButton"
         this.bDiscard = false
+        this.bCompare = false
         this.bDiscardClass = "fourthButton"
+        this.bCompareClass = "fourthButton"
       }
       else {
         this.bFollowClass = "fourthButton"
       }
     },
-    bFollowAnyFunc(){
-      this.bFollowAny = !this.bFollowAny
-      if (this.bFollowAny) {
+    bCompareFunc(){
+      this.bCompare = !this.bCompare
+      if(this.bCompare) {
         this.bFollow = false
-        this.bFollowClass = "fourthButton"
-        this.bFollowAnyClass = "primaryButton"
         this.bDiscard = false
+        this.bCompareClass = "thirdButton"
+        this.bFollowClass = "fourthButton"
         this.bDiscardClass = "fourthButton"
       } else {
-        this.bFollowAnyClass = "fourthButton"
+        this.bCompareClass = "fourthButton"
       }
     },
     bDiscardFunc() {
@@ -192,45 +220,12 @@ export default  {
       if(this.bDiscard) {
         this.bDiscardClass = "thirdButton"
         this.bFollow = false
+        this.bCompare = false
         this.bFollowClass = "fourthButton"
-        this.bFollowAny = false
-        this.bFollowAnyClass = "fourthButton"
+        this.bCompareClass = "fourthButton"
       } else {
         this.bDiscardClass = "fourthButton"
       }
-    },
-    bAdd2() {
-      this.currBvol += this.bCtlVol[2].ctrVol2
-      if (this.currBvol > this.roomShare.maxVol) {
-        this.currBvol = this.roomShare.maxVol
-      }
-    },
-    bAdd3() {
-      this.currBvol += this.bCtlVol[2].ctrVol3
-      if (this.currBvol > this.roomShare.maxVol) {
-        this.currBvol = this.roomShare.maxVol
-      }
-    },
-    bAdd5() {
-      this.currBvol += this.bCtlVol[2].ctrVol5
-      if (this.currBvol > this.roomShare.maxVol) {
-        this.currBvol = this.roomShare.maxVol
-      }
-    },
-    bAdd6() {
-      this.currBvol += this.bCtlVol[2].ctrVol6
-      if (this.currBvol > this.roomShare.maxVol) {
-        this.currBvol = this.roomShare.maxVol
-      }
-    },
-    bCheckOwnCards() {
-      this.roomShare.tID = parseInt(localStorage.getItem("RoomID"))
-      this.roomShare.name = localStorage.getItem("LoginUser")
-      this.roomShare.msgType = "CHECKCARDS"
-      this.cardCheck = false
-
-      console.log(this.roomShare)
-      this.socket.send(JSON.stringify(this.roomShare))
     },
 
     acceptMsg(evt) {
@@ -247,23 +242,19 @@ export default  {
                 startPoint = startPoint - 6
             } */
             let jsonType = rcvJson.type
-            // console.log(rcvJson.type,rcvJson)
+            // console.log("RCVJSON:", rcvJson.type,rcvJson)
             switch (jsonType) {
               case "PLAYER":
-                let msgType = rcvJson.msgType
-                switch (msgType) {
-                  case "INITROOM":
-                  case "JOIN":
-                    console.log("Self Msg:", rcvJson)
-                    break
-                  default:
-                    let playMsg = rcvJson
-                    console.log("playMsg:", playMsg)
-                    
-                    let seatID = playMsg.seatID
-                    if(playMsg.seatID == 3) {seatID = 5}
-                    if(playMsg.seatID == 5) {seatID = 3}
-                    this.players[seatID] = rcvJson
+                let playMsg = rcvJson
+                console.log("playMsg:", playMsg.name, playMsg.msgType)
+
+                let i = 0
+                for(i=0;i<6;i++) {
+                  if(playMsg.name == this.players[i].name){
+                    this.players[i] = playMsg
+                    if(playMsg.name == this.player.name) {
+                      this.player = playMsg
+                    }
 
                     if(playMsg.discard == true) {
                       this.discardsDisp = playMsg.cards
@@ -272,65 +263,66 @@ export default  {
                       this.discardsShow = false
                     }
                   }
+                }
+                console.log("this.players:", this.players)
               break
               case "ROOM":
                   this.roomShare = rcvJson
-                  let focusID = this.roomShare.focusID
-                  if(focusID < 9) {
-                    if (this.players[focusID].name == localStorage.getItem("LoginUser")) {
-                      this.bControl = true
-                      this.bCounter = 6
-                      this.bTimeout = false
-                    }
-                    else {
-                      this.bControl = false
-                    }
-                  }
-  
                   console.log("roomShare", this.roomShare)
-                  this.currBvol = rcvJson.minVol
 
-                  let seatDID
-                  seatDID = this.roomShare.focusID
-                  if(this.roomShare.focusID ==3) {
-                    seatDID = 5
-                  }
-                  if(this.roomShare.focusID ==5) {
-                    seatDID = 3
-                  }
-                  if(this.roomShare.focusID < 6) {
-                    this.players[seatDID].focus = true
-                    let i
-                    for(i=0; i<6; i++) {
-                      if(i != seatDID) {
-                        this.players[i].focus = false
+                  this.currBvol = rcvJson.minVol
+                  for(i=0;i<6;i++) {
+                    if(this.roomShare.focusID == this.players[i].seatID) {
+                      this.players[i].focus = true
+                      if (this.players[i].name == this.player.name && this.player.hasCard) {
+                        this.bControl = true
+                        this.bCounter = 10
+                        this.bTimeout = false
+                      } else {
+                        this.bControl = false
                       }
+                    } else {
+                      this.players[i].focus = false
                     }
                   }
                 break
               case "INITROOM":
+                this.bTimeout = false
                 console.log("InitRoom:", rcvJson)
-                let i
-                this.roomShare.totalAmount = rcvJson.totalAmount
-                for(i=0; i<6; i++) {
-                  if(i == 3) {
-                    this.players[i].name = rcvJson.players[5]
-                    this.players[i].balance = rcvJson.balances[5]
-                    this.players[i].hasCard = rcvJson.hasCards[5]
-                    this.players[i].discard = rcvJson.discards[5]
-                  }else if(i == 5) {
-                    this.players[i].name = rcvJson.players[3]
-                    this.players[i].balance = rcvJson.balances[3]
-                    this.players[i].hasCard = rcvJson.hasCards[3]
-                    this.players[i].discard = rcvJson.discards[3]
-                  }else{
-                    this.players[i].name = rcvJson.players[i]
-                    this.players[i].balance = rcvJson.balances[i]
-                    this.players[i].hasCard = rcvJson.hasCards[i]
-                    this.players[i].discard = rcvJson.discards[i]
-                  }
+                let initRoom = rcvJson
+                let loginUserSeatID = this.getLoginUserSeatID(initRoom)
+                console.log("LoginUserSeatID", loginUserSeatID)
+                let startSeatID = 0
+                if(loginUserSeatID != 100) {
+                  startSeatID = loginUserSeatID + 2
+                  if(startSeatID >= 6) { startSeatID -= 6 }
+                } 
 
-                  if(this.players[i].name == localStorage.getItem("LoginUser")) {
+                let seatDID = 0
+                for(i=0; i<6; i++) {
+                  seatDID = i
+                  if(seatDID == 3) {
+                    this.players[5].seatID = startSeatID
+                    this.players[5].seatDID = 5
+                  } else if (seatDID == 5) { 
+                    this.players[3].seatID = startSeatID
+                    this.players[3].seatDID = 3
+                  } else {
+                    this.players[seatDID].seatID = startSeatID
+                    this.players[seatDID].seatDID = seatDID
+                  }
+                  startSeatID++
+                  if(startSeatID >=6) { startSeatID = 0 }
+                }
+
+                this.roomShare.totalAmount = initRoom.totalAmount
+                for(i=0; i<6; i++) {
+                  this.players[i].name = initRoom.players[this.players[i].seatID]
+                  this.players[i].balance = initRoom.balances[this.players[i].seatID]
+                  this.players[i].hasCard = initRoom.hasCards[this.players[i].seatID]
+                  this.players[i].discard = initRoom.discards[this.players[i].seatID]
+
+                  if(this.players[i].name == localStorage.getItem("LoginUser") && this.players[i].hasCard) {
                     this.players[i].showCard = true
                     this.player = this.players[i]
                   }else {
@@ -342,14 +334,12 @@ export default  {
                 console.log("CARDS", rcvJson)
                 let j
                 for (i=0;i<9;i++) {
-                  let seatDID
-                  seatDID = i
-                  if(i == 3) {seatDID =5}
-                  if(i == 5) {seatDID =3}
+                  let seatID
+                  seatID = this.players[i].seatID
                   for (j=0;j<3;j++) {
-                    this.players[i].cards[j].points = rcvJson.points[3*seatDID + j]
-                    this.players[i].cards[j].suits = rcvJson.suits[3*seatDID + j]
-                    this.players[i].cardsType = rcvJson.cardsTypes[seatDID]
+                    this.players[i].cards[j].points = rcvJson.points[3*seatID + j]
+                    this.players[i].cards[j].suits = rcvJson.suits[3*seatID + j]
+                    this.players[i].cardsType = rcvJson.cardsTypes[seatID]
                   }
                 }
               break
@@ -368,6 +358,16 @@ export default  {
     //  this.socket.send(JSON.stringify(msg))
       this.socket.close()
     },
+    getLoginUserSeatID(initRoom) {
+      let i = 0
+      let seatID = 100
+      for(i=0;i<6;i++) {
+        if(initRoom.players[i] == localStorage.getItem("LoginUser")) {
+          seatID = i
+        }
+      }
+      return seatID
+    },
     joinMessage() {
       this.player.rID = 0
       this.player.msgType = "JOIN"
@@ -385,13 +385,6 @@ export default  {
       this.player.discard = true
       this.player.betVol = 0
       this.socket.send(JSON.stringify(this.player))
-    },
-    roomTestFunc() {
-      this.socket.send(JSON.stringify(this.roomTest))
-    },
-    newRoundTest() {
-      this.roomShare.msgType = "NEWROUND"
-      this.socket.send(JSON.stringify(this.roomShare))
     },
   }
 }
