@@ -120,7 +120,7 @@ export default  {
         console.log("Login User operation:", this.bCounter, this.bTimeout)
         if(!this.bTimeout && this.player.name != "UNKNOWN" && this.player.seatID != 100) {
           if(this.bFollow) {
-            this.player.msgType = "FOLLOW"
+            this.player.msgType = "FOLLOWING"
             if(this.player.balance > this.roomShare.minVol) {
               this.player.betVol = this.roomShare.minVol
               this.player.allin = false
@@ -146,7 +146,7 @@ export default  {
             this.bCounter = 0
           }
           if (this.bDiscard) {
-            this.player.msgType = "DISCARD"
+            this.player.msgType = "DISCARDING"
             this.player.betVol = 0
             this.bDiscardFunc()
             this.socket.send(JSON.stringify(this.player))
@@ -186,7 +186,7 @@ export default  {
     bConfirm() {
       this.bCounter = 0
       this.player.betVol = this.currBvol
-      this.player.msgType = "BCONFIRM"
+      this.player.msgType = "BCONFIRMING"
       console.log(this.player.name, this.player.msgType)
       this.socket.send(JSON.stringify(this.player))
     },
@@ -229,48 +229,50 @@ export default  {
     },
 
     acceptMsg(evt) {
-      let rcvJson
       try {
-        rcvJson = JSON.parse(evt.data)
-        if(rcvJson.rID == parseInt(localStorage.getItem("RoomID"))) {
-            /*
-            let currentSeatID = 0
-            let startPoint = 0
-
-            startPoint = currentSeatID + 2
-            if(startPoint > 5) {
-                startPoint = startPoint - 6
-            } */
-            let jsonType = rcvJson.type
-            // console.log("RCVJSON:", rcvJson.type,rcvJson)
-            switch (jsonType) {
+        let rcvMsg
+        let i = 0
+        rcvMsg = JSON.parse(evt.data)
+        console.log("Received:", rcvMsg)
+        if(rcvMsg.rID == parseInt(localStorage.getItem("RoomID"))) {
+            switch (rcvMsg.type) {
               case "PLAYER":
-                let playMsg = rcvJson
-                console.log("playMsg:", playMsg.name, playMsg.msgType)
-
-                let i = 0
-                for(i=0;i<6;i++) {
-                  if(playMsg.name == this.players[i].name){
-                    this.players[i] = playMsg
-                    if(playMsg.name == this.player.name) {
-                      this.player = playMsg
+                switch(rcvMsg.msgType) {
+                  case "BCONFIRMING":
+                  case "FOLLOWING":
+                  case "DISCARDING":
+                  case "JOINING":
+                  case "LEAVEING":
+                  case "COMPARING":
+                  case "INITROOM":
+                    console.log("Self msg:", )
+                  break
+                  default:
+                    console.log("Player:", rcvMsg.name, rcvMsg.msgType)
+    
+                    for(i=0;i<6;i++) {
+                      if(rcvMsg.name == this.players[i].name){
+                        this.players[i] = rcvMsg
+                        if(rcvMsg.name == this.player.name) {
+                          this.player = rcvMsg
+                        }
+    
+                        if(rcvMsg.discard == true) {
+                          this.discardsDisp = rcvMsg.cards
+                          this.discardsShow = true
+                        } else {
+                          this.discardsShow = false
+                        }
+                      }
                     }
-
-                    if(playMsg.discard == true) {
-                      this.discardsDisp = playMsg.cards
-                      this.discardsShow = true
-                    } else {
-                      this.discardsShow = false
-                    }
-                  }
+                    console.log("this.players:", this.players)
                 }
-                console.log("this.players:", this.players)
               break
               case "ROOM":
-                  this.roomShare = rcvJson
+                  this.roomShare = rcvMsg
                   console.log("roomShare", this.roomShare)
 
-                  this.currBvol = rcvJson.minVol
+                  this.currBvol = this.roomShare.minVol
                   for(i=0;i<6;i++) {
                     if(this.roomShare.focusID == this.players[i].seatID) {
                       this.players[i].focus = true
@@ -288,8 +290,8 @@ export default  {
                 break
               case "INITROOM":
                 this.bTimeout = false
-                console.log("InitRoom:", rcvJson)
-                let initRoom = rcvJson
+                console.log("InitRoom:", rcvMsg)
+                let initRoom = rcvMsg
                 let loginUserSeatID = this.getLoginUserSeatID(initRoom)
                 console.log("LoginUserSeatID", loginUserSeatID)
                 let startSeatID = 0
@@ -331,24 +333,24 @@ export default  {
                 }
               break
               case "CARDS":
-                console.log("CARDS", rcvJson)
+                console.log("CARDS", rcvMsg)
                 let j
                 for (i=0;i<9;i++) {
                   let seatID
                   seatID = this.players[i].seatID
                   for (j=0;j<3;j++) {
-                    this.players[i].cards[j].points = rcvJson.points[3*seatID + j]
-                    this.players[i].cards[j].suits = rcvJson.suits[3*seatID + j]
-                    this.players[i].cardsType = rcvJson.cardsTypes[seatID]
+                    this.players[i].cards[j].points = rcvMsg.points[3*seatID + j]
+                    this.players[i].cards[j].suits = rcvMsg.suits[3*seatID + j]
+                    this.players[i].cardsType = rcvMsg.cardsTypes[seatID]
                   }
                 }
               break
               default:
-                console.log("Data Ignored:", rcvJson)
+                console.log("Data Ignored:", rcvMsg)
             }
         } else{
           console.log("Other room data, ignored!")
-          console.log(rcvJson)
+          console.log(rcvMsg)
         }
       } catch(e) {
         console.log("error message", e.message)
@@ -370,7 +372,7 @@ export default  {
     },
     joinMessage() {
       this.player.rID = 0
-      this.player.msgType = "JOIN"
+      this.player.msgType = "JOINING"
       this.player.robot = false
       this.player.name = localStorage.getItem("LoginUser")
       this.player.balance = parseInt(localStorage.getItem("Balance"))
@@ -378,7 +380,7 @@ export default  {
     },
     leaveMessage() {
       this.player.rID = 0
-      this.player.msgType = "LEAVE"
+      this.player.msgType = "LEAVING"
       this.player.name = localStorage.getItem("LoginUser")
       this.player.seatDID = 100
       this.player.focus = false
