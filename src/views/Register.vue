@@ -2,10 +2,13 @@
   <div class="main">
     <span style="inputLable"> 用 户 名： </span>
     <input class="userInput" v-model="player.username" placeholder="请输入用户名"> <br>
+    <span class="inputLable"> 手 机 号： </span>
+    <input class="userInput" v-model="player.telephone" placeholder="请输入手机号"> <br>
     <span class="inputLable">登录密码：</span>
-    <input class="userInput" v-model="player.passwd1" type="password" placeholder="请输入您的密码" > <br>
-    <button class="primaryButton" @click="logon()">登录</button>
-    <router-link to="/register"> --->注册 </router-link>
+    <input class="userInput" v-model="player.passwd1" type="password" placeholder="请输入您的密码:6-16个字符" > <br>
+    <span class="inputLable">重复密码：</span>
+    <input class="userInput" v-model="player.passwd2" type="password" placeholder="请再次输入您的密码" > <br>
+    <button class="secondaryButton" @click="logon()">注册</button>
   </div>
 </template>
 
@@ -53,30 +56,12 @@ export default {
 
     },
     logon() {
-      if(this.player.username.length == 0) {
-        alert("用户名不能为空")
-        return
-      }
-      let baseUrl = 'http://140.143.149.188:8080/username/'
-      baseUrl += this.player.username
-      axios.get(baseUrl)
+      axios.get('http://140.143.149.188:8080/username/test22')
               .then( response => {
-                      this.info = response.data
-                      if(this.info.length == 1) {
-                        console.log(this.info)
-                        if(this.player.passwd1 == this.info[0].passwd) {
-                          console.log("准备进入 room ....")
-                        } else {
-                          console.log("用户名或密码错")
-                        }
-
-                      } else {
-                        console.log(this.info)
-                        alert("用户名不存在或错误")
-                        return
-                      }
+                      this.info = response.data;
+                      console.log(this.info.length);
               }).catch( error => {
-                      console.log(error)
+                      console.log(error);
               })
         }
   }
@@ -97,7 +82,7 @@ export default {
   background: green;
   border: none;
   color: white;
-  margin: 6px 20px;
+  margin: 6px 3px;
   border-radius: 6px;
 }
 .secondaryButton {
