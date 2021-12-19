@@ -4,7 +4,7 @@
     <input class="userInput" v-model="player.username" placeholder="请输入用户名"> <br>
     <span class="inputLable">登录密码：</span>
     <input class="userInput" v-model="player.passwd1" type="password" placeholder="请输入您的密码" > <br>
-    <button class="primaryButton" @click="logon()">登录</button>
+    <button class="primaryButton" @click="login()">登录</button>
     <router-link to="/register"> --->注册 </router-link>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
     }
   },
   methods: {
-    login() {
+    logon() {
       console.log(this.player)
       if(this.player.username.length < 5) {
         alert("用户名必须大于4个字符")
@@ -52,7 +52,7 @@ export default {
       }
 
     },
-    logon() {
+    login() {
       if(this.player.username.length == 0) {
         alert("用户名不能为空")
         return
@@ -67,7 +67,7 @@ export default {
                         if(this.player.passwd1 == this.info[0].passwd) {
                           console.log("准备进入 room ....")
                         } else {
-                          console.log("用户名或密码错")
+                          alert("用户名或密码错")
                         }
 
                       } else {
