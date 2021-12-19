@@ -154,10 +154,6 @@ export default  {
       }
     }, 1000)
   },
-  destroyed() {
-    console.log("离开页面时关闭WS。")
-    this.socket.close()
-  },
   methods: {
     bAdd1() {
       this.currBvol += this.bCtlVol[2].ctrVol1
