@@ -85,10 +85,6 @@ export default  {
     }
   },
   mounted() {
-    localStorage.setItem("LoginUser","dev21666")
-    localStorage.setItem("Balance","2000000")
-    localStorage.setItem("RoomID","0")
-
     this.socket = new WebSocket("ws://140.143.149.188:9080/ws")
     this.socket.onclose = () => {
       console.log("Connection closed")
@@ -157,6 +153,10 @@ export default  {
         }
       }
     }, 1000)
+  },
+  destroyed() {
+    console.log("离开页面时关闭WS。")
+    this.socket.close()
   },
   methods: {
     bAdd1() {
@@ -249,14 +249,14 @@ export default  {
                   break
                   default:
                     console.log("Player:", rcvMsg.name, rcvMsg.msgType)
-    
+
                     for(i=0;i<6;i++) {
                       if(rcvMsg.name == this.players[i].name){
                         this.players[i] = rcvMsg
                         if(rcvMsg.name == this.player.name) {
                           this.player = rcvMsg
                         }
-    
+
                         if(rcvMsg.discard == true) {
                           this.discardsDisp = rcvMsg.cards
                           this.discardsShow = true
@@ -298,7 +298,7 @@ export default  {
                 if(loginUserSeatID != 100) {
                   startSeatID = loginUserSeatID + 2
                   if(startSeatID >= 6) { startSeatID -= 6 }
-                } 
+                }
 
                 let seatDID = 0
                 for(i=0; i<6; i++) {
@@ -306,7 +306,7 @@ export default  {
                   if(seatDID == 3) {
                     this.players[5].seatID = startSeatID
                     this.players[5].seatDID = 5
-                  } else if (seatDID == 5) { 
+                  } else if (seatDID == 5) {
                     this.players[3].seatID = startSeatID
                     this.players[3].seatDID = 3
                   } else {
